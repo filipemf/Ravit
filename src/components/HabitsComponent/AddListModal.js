@@ -63,7 +63,7 @@ export default class AddListModal extends React.Component {
 
                     <View style={{ marginVertical: 15 }}>
                         <Text style={styles.title}>Lista de listas</Text>
-                        <TextInput style={styles.input} placeholder="Um nome para as suas novas metas" onChangeText={text => this.setState({ name: text })} />
+                        <TextInput maxLength={18} style={styles.input} placeholder="Um nome para as suas novas metas" onChangeText={text => this.setState({ name: text })} />
 
                         <View style={{ flexDirection: "row", justifyContent: 'space-between', marginTop: 12 }}>
                             {this.renderColors()}

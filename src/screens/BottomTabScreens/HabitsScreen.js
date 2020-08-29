@@ -87,17 +87,14 @@ export default function HabitsScreen({ navigation }) {
 
             </View>
 
-            <View style={{ bottom: 60 }}>
+
                 <FlatList
+                    style={{bottom: 70}}
                     showsHorizontalScrollIndicator={false}
                     data={lists}
                     keyExtractor={item => item.id.toString()}
-                    style={{}}
-                    scrollEventThrottle={16}
-                    renderItem={({ item, index }) => renderList(item)}
-                    keyboardShouldPersistTaps="always" />
+                    renderItem={({ item, index }) => renderList(item)}/>
 
-            </View>
         </View>
     )
 }

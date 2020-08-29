@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Alert, Dimensions} from 'react-native'
 import Colors from '../../utils/Colors'
 import ToDoModal from './ToDoModal'
 import Fire from '../../../Fire'
@@ -63,30 +63,30 @@ export default class ToDoList extends React.Component {
 
 
                     <TouchableOpacity style={[styles.listContainer, { backgroundColor: list.color }]} onPress={() => this.toggleListModal()} onLongPress={() => this.AsyncDeleteAlert()}>
-                        <View>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 15, bottom: 5 }}>
-                                <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc" />
+                        <View style={{}}>
+                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-cafe"?-20:10, flexWrap:'wrap'}}>
+                                <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc"/>
                             </View>
 
-                            <View style={{ alignItems: 'flex-start', margin: 5, marginLeft: 10 }}>
-                                <Text style={styles.listTitle} numberOfLines={1}>
+                            <View style={{ alignItems: 'flex-start', margin: 5, marginLeft: 10, width: 180, }}>
+                                <Text style={styles.listTitle} >
                                     {list.name}
                                 </Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, bottom: 10 }}>
-                                <Text style={[styles.subtitle, { color: "#6bf567", fontFamily: 'Helvetica-Nue-Condensed' }]}>Completada:{' '}</Text>
-                                <Text style={[styles.count, { color: "#6bf567" }]}>{completedCount}</Text>
-
-                            </View>
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, bottom: 10 }}>
-                                <Text style={[styles.subtitle, { color: "#c93e56", fontFamily: 'Helvetica-Nue-Condensed' }]}>Faltando:{' '}</Text>
-                                <Text style={[styles.count, { color: "#c93e56" }]}>{remainingCount}</Text>
-
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -25, flexWrap:'wrap'}}>
+                                <Text style={[styles.subtitle, { color: "#538223", fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold'}]}>Completada:{' '}</Text>
+                                <Text style={[styles.count, { color: "#538223" , fontWeight: 'bold'}]}>{completedCount}</Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, marginTop: 10 }}>
-                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#d9d9d9' }}>adicionada há {date}</Text>
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -25, flexWrap:'wrap'}}>
+                                <Text style={[styles.subtitle, { color: "#c93e56", fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold'}]}>Faltando:{' '}</Text>
+                                <Text style={[styles.count, { color: "#c93e56", fontWeight: 'bold'}]}>{remainingCount}</Text>
+
+                            </View>
+
+                            <View style={{ alignItems: 'center', marginLeft: 20, top: 145, position: 'absolute', flexWrap:'wrap'}}>
+                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#525252'}}>adicionada há {date}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>

@@ -87,6 +87,7 @@ export default function ProfileScreen(props, { navigation }) {
             await setPosts(allPosts)
         }
         const totalProps = Object.keys(posts).length
+        //console.log(totalProps)
         await setPostsQuantity(totalProps)
 
     }
@@ -168,35 +169,26 @@ export default function ProfileScreen(props, { navigation }) {
                     </TouchableOpacity>
 
                     <View style={{ flexDirection: 'column', marginLeft: 5, backgroundColor: '#fff' }}>
-
-
                         <TouchableOpacity style={{ position: 'absolute', top: 10 }} onPress={() => AsyncSignOutAlert()}>
                             <Image source={user.avatar ? { uri: user.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
                         </TouchableOpacity>
 
-
-
                         <View style={styles.statsContainer}>
-
                             <View style={{ flexDirection: 'column', margin: 7 }}>
                                 <Text style={{ fontFamily: 'Helvetica-Nue', fontSize: 16, color: "#000" }}>Posts</Text>
                                 <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold', alignSelf: 'center', fontSize: 17, color: "#000" }}>{postsQuantity}</Text>
                             </View>
-
 
                             <View style={{ flexDirection: 'column', margin: 7 }}>
                                 <Text style={{ fontFamily: 'Helvetica-Nue', fontSize: 16, color: "#000" }}>Seguidores</Text>
                                 <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold', alignSelf: 'center', fontSize: 17, color: "#000" }}>{followers}</Text>
                             </View>
 
-
                             <View style={{ flexDirection: 'column', margin: 7 }}>
                                 <Text style={{ fontFamily: 'Helvetica-Nue', fontSize: 16, color: "#000" }}>Seguindo</Text>
                                 <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold', alignSelf: 'center', fontSize: 17, color: "#000" }}>{following}</Text>
                             </View>
-
                         </View>
-
                     </View>
 
                     <View style={{ flexDirection: 'row', width: ((Dimensions.get('window').width * 65) / 100), left: 10, marginBottom: 30 }}>
@@ -206,7 +198,6 @@ export default function ProfileScreen(props, { navigation }) {
                         </TouchableOpacity>
 
 
-
                         <View style={{ flexDirection: 'row', top: 60, right: 80, marginTop: 30 }}>
                             <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#00ccff', fontWeight: 'bold' }}>1</Text> </Text>
                             <View style={[styles.progressBar]}><Text style={{ alignSelf: 'center', fontWeight: 'bold', color: '#000' }}>0/100</Text></View>
@@ -214,10 +205,6 @@ export default function ProfileScreen(props, { navigation }) {
 
                     </View>
                 </View>
-
-
-
-
 
                 <FlatList
                     style={{ backgroundColor: '#fff', marginTop: 5 }}

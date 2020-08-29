@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StatusBar, View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, Button, Dimensions } from 'react-native'
+import { StatusBar, View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import Fire from '../../../Fire'
@@ -10,6 +10,7 @@ const firebase = require("firebase")
 import UserPermissions from '../../utils/UserPermission'
 import Colors from '../../utils/Colors'
 import { ScrollView } from 'react-native-gesture-handler'
+import { ActivityIndicator } from 'react-native-paper'
 
 
 
@@ -36,19 +37,27 @@ export default function PostScreen(props, { navigation }) {
   const [prepareMode, setPrepareMode] = useState("")
   const [tags, setTags] = useState([]);
   const [backgroundColor, setBackgroundColor] = useState(allBackgroundColor);
+  const [isLoading, setLoading] = useState(false);
 
 
   useEffect(() => {
+    setupEverything()
+  }, []);
+
+  const setupEverything = async()=>{
+    await setLoading(true)
     UserPermissions.getCameraPermission()
     const user = props.uid || Fire.shared.uid
-    firebase.firestore()
+    await firebase.firestore()
       .collection("users")
       .doc(user)
       .onSnapshot(doc => {
         const avatarImage = doc.data().avatar
         setAvatar(avatarImage)
       })
-  }, []);
+      
+    await setLoading(false)
+  }
 
   const navigateToHome = () => {
     props.navigation.navigate("Home")
@@ -166,6 +175,14 @@ export default function PostScreen(props, { navigation }) {
 
   const letsGo = () => {
     props.navigation.goBack(null)
+  }
+
+  if(isLoading==false){
+
+  }
+  else{
+    <ActivityIndicator size="large" color="purple"/>
+
   }
 
   return (
