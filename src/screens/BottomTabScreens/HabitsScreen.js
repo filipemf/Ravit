@@ -82,7 +82,7 @@ export default function HabitsScreen({ navigation }) {
                 </View>
 
                 <TouchableOpacity style={styles.addList} onPress={() => toggleAddTodoModal()} onRequestClose={() => toggleAddTodoModal()}>
-                    <AntDesign name="plus" size={16} color="#000" style={{ fontWeight: 'bold' }} />
+                    <Text style={{fontSize: 22, fontWeight: 'bold'}}>+</Text>
                 </TouchableOpacity>
 
             </View>

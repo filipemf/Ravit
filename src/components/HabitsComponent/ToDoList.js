@@ -74,19 +74,19 @@ export default class ToDoList extends React.Component {
                                 </Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -25, flexWrap:'wrap'}}>
-                                <Text style={[styles.subtitle, { color: "#538223", fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold'}]}>Completada:{' '}</Text>
-                                <Text style={[styles.count, { color: "#538223" , fontWeight: 'bold'}]}>{completedCount}</Text>
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -18, flexWrap:'wrap'}}>
+                                <Text style={[styles.subtitle, { color: "#000", fontFamily: 'Helvetica-Nue-Condensed'}]}>Completada:{' '}</Text>
+                                <Text style={[styles.count, { color: "#000", fontWeight: 'bold'}]}>{completedCount}</Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -25, flexWrap:'wrap'}}>
-                                <Text style={[styles.subtitle, { color: "#c93e56", fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold'}]}>Faltando:{' '}</Text>
-                                <Text style={[styles.count, { color: "#c93e56", fontWeight: 'bold'}]}>{remainingCount}</Text>
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -18, flexWrap:'wrap'}}>
+                                <Text style={[styles.subtitle, { color: "#000", fontFamily: 'Helvetica-Nue-Condensed'}]}>Faltando:{' '}</Text>
+                                <Text style={[styles.count, { color: "#000", fontWeight: 'bold'}]}>{remainingCount}</Text>
 
                             </View>
 
                             <View style={{ alignItems: 'center', marginLeft: 20, top: 145, position: 'absolute', flexWrap:'wrap'}}>
-                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#525252'}}>adicionada há {date}</Text>
+                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#525252', fontWeight:'bold'}}>adicionada há {date}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>

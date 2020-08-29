@@ -82,7 +82,6 @@ export default function HomeScreen({ navigation }) {
     for (let i = 0; i < post.tags.length; i++) {
       for (let j = 0; j < stateTags.length; j++) {
         if (post.tags[i].item.name == stateTags[j]) {
-          console.log(stateTags[j])
           return (
             <>
             </>
@@ -271,8 +270,8 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 28,
-    fontWeight: "500",
-    color: "#454D65"
+    fontWeight: "bold",
+    color: "#000"
   },
   timestamp: {
     fontSize: 16,

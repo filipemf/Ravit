@@ -1,7 +1,7 @@
 import React from 'react'
-import { SafeAreaView, StatusBar, View, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, StatusBar, View, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput, Text, Dimensions} from 'react-native'
 import Fire from '../../../Fire'
-import { AntDesign } from '@expo/vector-icons'
+import { AntDesign, MaterialIcons} from '@expo/vector-icons'
 import moment from 'moment'
 
 import styled from 'styled-components'
@@ -131,7 +131,7 @@ export default class RecipesPosts extends React.Component {
                 <Image source={comments.avatar ? { uri: comments.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.personalAvatar} />
                 <Text style={styles.name}>{comments.usernameCommented}</Text>
               </View>
-              <Text heavy small style={{ left: 88, bottom: 33, color: "#383838" }}>{moment(comments.timestamp).fromNow()}</Text>
+              <Text style={{ left: 88, bottom: 33, color: "#383838", fontWeight:'bold'}}>{moment(comments.timestamp).fromNow()}</Text>
               <Text style={styles.postCommentary}>{comments.commentary}</Text>
             </View>
           </View>
@@ -154,7 +154,7 @@ export default class RecipesPosts extends React.Component {
     }
     else {
       return (
-        <>
+        <View style={{flex:1}}>
           <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
           <Back>
             <TouchableOpacity style={{ left: 5, top: 15 }} onPress={() => this.props.navigation.goBack(null)}>
@@ -167,13 +167,16 @@ export default class RecipesPosts extends React.Component {
           </Back>
 
 
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <Container>
               <RecipeBackground source={{ uri: this.state.image }}>
                 <SafeAreaView>
 
                   <MainRecipe>
-                    <Text MetropolisRegular title style={{
+                    <Text style={{
+                      fontWeight: 'bold',
+                      fontSize: 30,
+                      fontFamily: 'Metropolis-Regular',
                       textShadowColor: 'rgba(0, 0, 0, 1.0)',
                       textShadowOffset: { width: -1, height: 1 },
                       textShadowRadius: 25,
@@ -187,28 +190,34 @@ export default class RecipesPosts extends React.Component {
 
               </RecipeBackground>
 
-              <RecipesContainer>
+              <RecipesContainer style={{maxWidth: Dimensions.get('screen').width, flex:1}}>
                 <View style={{ flexDirection: 'row', bottom: '10%' }}>
-                  <Image source={this.state.avatar ? { uri: this.state.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
-                  {this.state.uid == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removePost(this.state.image, this.state.text, this.state.timestamp, this.state.titleText, this.state.uid, this.state.username)} style={{ left: '160%', bottom: '10%', top: '10%' }}><AntDesign name="delete" size={24} /></TouchableOpacity> : <></>}
+
+                  <View style={{flexDirection:'row'}}>
+                                      
+                    {this.state.uid == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removePost(this.state.image, this.state.text, this.state.timestamp, this.state.titleText, this.state.uid, this.state.username)} style={{ right: '10%', top:10,maxWidth: Dimensions.get('screen').width/3}}><MaterialIcons name="delete-forever" size={32} /></TouchableOpacity> : <></>}
+                
+                    <Image source={this.state.avatar ? { uri: this.state.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
+                    <Text style={{fontFamily: 'Lato-Regular', fontSize: 17, left: 95, fontWeight:'bold',maxWidth: Dimensions.get('screen').width/5}}>{moment(this.state.timestamp).fromNow()}</Text>
+                  </View>
+
                 </View>
 
                 <View style={{ flexDirection: 'row', bottom: 65, marginHorizontal: 45, right: 70 }}>
-                  <Text dark large heavy style={{ marginRight: 30 }}>@{this.state.username}</Text>
-                  <Text grey large heavy style={{ marginHorizontal: 40 }}>{moment(this.state.timestamp).fromNow()}</Text>
+                  <Text style={{fontFamily: 'Lato-Regular', fontSize: 26, fontWeight: 'bold'}}>@{this.state.username}</Text>
                 </View>
 
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', flex:1}}>
                   <AntDesign name="tags" size={24} color="black" />
-                  <Text dark large LatoRegular style={{ fontWeight: "bold", color: "#000" }}>  TAGS: </Text>
+                  <Text style={{ fontWeight: "bold", color: "#000",fontFamily: 'Lato-Regular', fontSize: 17, fontWeight: 'bold'}}>  TAGS: </Text>
                 </View>
 
 
-                <View style={{ flexDirection: 'row', right: 35, flexWrap: 'wrap' }}>
+                <View style={{ flexDirection: 'row', right: 35, flexWrap: 'wrap', maxWidth: Dimensions.get('screen').width/3}}>
 
                   {
                     this.state.tags.map(data => (
-                      <Text style={{ backgroundColor: data.item.color, left: 40 }}> <Text style={{ color: "#FFF" }}>{data.item.name}</Text> </Text>
+                      <Text style={{ backgroundColor: data.item.color, left: 40 ,fontFamily: 'Lato-Regular', fontSize: 18}}> <Text style={{ color: "#FFF" }}>{data.item.name}</Text> </Text>
                     ))
                   }
                 </View>
@@ -216,18 +225,18 @@ export default class RecipesPosts extends React.Component {
                 <Text>{"\n"}</Text>
 
 
-                <Text dark large LatoRegular>
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 24, fontWeight: 'bold'}}>
                   Ingredientes
                     </Text>
-                <Text grey large LatoRegular>
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 19}}>
                   {this.state.ingredients}
                   {"\n"}
                 </Text>
 
-                <Text dark large LatoRegular>
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 24, fontWeight: 'bold'}}>
                   Modo de Preparo
                     </Text>
-                <Text grey large LatoRegular>
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 19}}>
                   {this.state.prepareMode}
                 </Text>
 
@@ -258,7 +267,7 @@ export default class RecipesPosts extends React.Component {
             </Container>
           </ScrollView>
 
-        </>
+        </View>
       )
     }
 
@@ -279,43 +288,43 @@ const MainRecipe = styled.View`
   margin: 200px 0 32px 0;
 `
 
-const Text = styled.Text`
-  color: ${(props) => (props.dark ? "#000" : props.grey ? "#adaaaa" : "#FFF")};
-  font-family: 'Metropolis-Regular';
+// const Text = styled.Text`
+//   color: ${(props) => (props.dark ? "#000" : props.grey ? "#adaaaa" : "#FFF")};
+//   font-family: 'Metropolis-Regular';
 
-  ${({ title, large, small }) => {
-    switch (true) {
-      case title:
-        return `font-size: 32px`;
-      case large:
-        return `font-size: 20px`;
-      case small:
-        return `font-size: 13px`;
-    }
-  }}
+//   ${({ title, large, small }) => {
+//     switch (true) {
+//       case title:
+//         return `font-size: 32px`;
+//       case large:
+//         return `font-size: 20px`;
+//       case small:
+//         return `font-size: 13px`;
+//     }
+//   }}
 
-  ${({ bold, heavy }) => {
-    switch (true) {
-      case bold:
-        return `font-weight: 600`;
-      case heavy:
-        return `font-weight: 700`
-    }
-  }}
+//   ${({ bold, heavy }) => {
+//     switch (true) {
+//       case bold:
+//         return `font-weight: bold`;
+//       case heavy:
+//         return `font-weight: 700`
+//     }
+//   }}
 
-${({ MetropolisRegular, LatoRegular, Helvetica, HelveticaCondensed }) => {
-    switch (true) {
-      case MetropolisRegular:
-        return `font-family: 'Metropolis-Regular`;
-      case LatoRegular:
-        return `font-family: 'Lato-Regular`;
-      case Helvetica:
-        return `font-family: 'Helvetica-Nue-Condensed'`;
-      case HelveticaCondensed:
-        return `font-family: 'Helvetica-Nue`;
-    }
-  }}
-`
+// ${({ MetropolisRegular, LatoRegular, Helvetica, HelveticaCondensed }) => {
+//     switch (true) {
+//       case MetropolisRegular:
+//         return `font-family: 'Metropolis-Regular`;
+//       case LatoRegular:
+//         return `font-family: 'Lato-Regular`;
+//       case Helvetica:
+//         return `font-family: 'Helvetica-Nue-Condensed'`;
+//       case HelveticaCondensed:
+//         return `font-family: 'Helvetica-Nue`;
+//     }
+//   }}
+// `
 
 const Back = styled.View`
   border-color: 'rgba(0,0,0,1.0)';
@@ -365,7 +374,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 12,
-    left: 90,
+    left:70,
     bottom: 50,
     overflow: "hidden",
     borderWidth: 2.0,
