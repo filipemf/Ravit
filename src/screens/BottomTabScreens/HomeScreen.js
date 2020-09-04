@@ -178,13 +178,23 @@ export default function HomeScreen({ navigation }) {
     }
   }
 
+  // const renderFilters = (item) => {
+  //   return (
+  //     <TouchableOpacity style={{ padding: 10, backgroundColor: stateTags.includes(item.name) ? "#595757" : item.color, margin: 5, borderRadius: 4 }} onPress={() => handleFilters(item)}>
+  //       <Text style={{ color: '#fff', fontFamily: 'Metropolis-Regular' }}>{item.name}</Text>
+  //     </TouchableOpacity>
+  //   )
+  // }
+
+
   const renderFilters = (item) => {
     return (
-      <TouchableOpacity style={{ padding: 10, backgroundColor: stateTags.includes(item.name) ? "#595757" : item.color, margin: 5, borderRadius: 4 }} onPress={() => handleFilters(item)}>
+      <TouchableOpacity style={{ padding: 10, backgroundColor:  stateTags.includes(item.name) ? "#666666":"#000", margin: 5, borderRadius: 4}} onPress={() => handleFilters(item)}>
         <Text style={{ color: '#fff', fontFamily: 'Metropolis-Regular' }}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
+
 
   if (loading == false) {
     return (
@@ -193,19 +203,25 @@ export default function HomeScreen({ navigation }) {
 
         <View style={styles.header}>
 
-          <FlatList
-            style={{ marginLeft: 10 }}
-            data={tagFilters}
-            extraData={stateTags}
-            horizontal={true}
-            renderItem={(item) => renderFilters(item.item)}
-            showsHorizontalScrollIndicator={false}/>
+          <View style={{flexDirection:'row'}}>
+            <FlatList
+              style={{ marginLeft: 10 }}
+              data={tagFilters}
+              extraData={stateTags}
+              horizontal={true}
+              renderItem={(item) => renderFilters(item.item)}
+              showsHorizontalScrollIndicator={false}/>
 
-          <TouchableOpacity onPress={() => setStateTags([])} style={{}}>
-            <Ionicons name="ios-trash" size={28} color="#73788B" style={{ marginLeft: 30, marginTop: 10, right: 15 }} />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => setStateTags([])} style={{}}>
+              <Ionicons name="ios-trash" size={28} color="#73788B" style={{ marginLeft: 30, marginTop: 10, right: 15 }} />
+            </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{}}>
+          </View>
+
+
+          
+          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row'}}>
+            <Text style={{marginTop: 12, right: 10, fontFamily: 'Helvetica-Nue'}}>Procurar...</Text>
             <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 10, right: 25 }} />
           </TouchableOpacity>
 
@@ -241,7 +257,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     paddingTop: 14,
     paddingBottom: 16,
     backgroundColor: "#FFF",

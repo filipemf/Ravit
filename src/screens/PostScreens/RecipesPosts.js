@@ -335,6 +335,7 @@ const Back = styled.View`
   width:120%;
   height:75px;
   background-color: 'rgba(255,255,255,1.0)';
+  border-width: 0.5;
 `
 
 const Container = styled.View`

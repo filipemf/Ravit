@@ -167,12 +167,16 @@ export default class LoginScreen extends React.Component {
         this.setState({ secureTextEntry: !this.state.secureTextEntry })
     }
 
+    //<Text style={[styles.greetings, { fontSize: 16, fontFamily: 'Helvetica-Nue-Condensed' }]}>Bem vindo! Faça login para continuar.</Text>
+
     render() {
         if (this.state.loading == false) {
             return (
                 <ScrollView style={styles.container}>
                     <StatusBar backgroundColor="transparent" barStyle="dark-content" />
-                    <Text style={[styles.greetings, { fontSize: 16, fontFamily: 'Helvetica-Nue-Condensed' }]}>Bem vindo! Faça login para continuar.</Text>
+                   
+
+                    <Text style={{fontSize: 42, fontFamily:'Helvetica-Nue', color: "#000", alignSelf: 'center', marginTop: 15, marginBottom: -15}}>Ravit</Text>
 
                     <View style={styles.errorMessage}>
                         {this.state.errorMessage && <Text style={styles.errorLog}>{this.state.errorMessage}</Text>}
@@ -240,10 +244,6 @@ export default class LoginScreen extends React.Component {
                             Esqueceu sua senha?
                         </Text>
                     </TouchableOpacity>
-
-
-
-
 
                     <View style={{ marginBottom: 50 }}></View>
 

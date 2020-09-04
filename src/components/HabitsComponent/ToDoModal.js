@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
         color: "#3c3c3c",
         fontWeight: '600',
         marginLeft: 114,
-        fontFamily: 'Helvetica-Nue'
+        fontFamily: 'Helvetica-Nue',
+        fontWeight: 'bold'
     },
     footer: {
         paddingHorizontal: 32,

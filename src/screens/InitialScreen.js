@@ -30,7 +30,7 @@ const data = [
     lottieAnimation: require('../../assets/Animations/6192-mobile-chat.json')
   },
   {
-    type: 'Conectar-se',
+    type: 'Conectar-se ao Ravit',
     heading: '',
     description:
       '',
@@ -152,7 +152,7 @@ const Item = ({ heading, description, index, scrollX, lottieAnimation, type, nav
           {heading}
         </Animated.Text>
 
-        {type != "Conectar-se" ?
+        {type != "Conectar-se ao Ravit" ?
           <Animated.Text
             style={[
               styles.description,
@@ -169,8 +169,11 @@ const Item = ({ heading, description, index, scrollX, lottieAnimation, type, nav
           >
             {description}
           </Animated.Text>
+          
           :
           <View style={{ alignItems: 'center', alignSelf: 'center', alignContent: 'center' }}>
+
+            <Text style={{ fontFamily: 'Helvetica-Nue', fontSize: 38, top: 70 }}>Ravit</Text>
 
             <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontSize: 22, top: 70 }}>Clique no botão abaixo para começar</Text>
 

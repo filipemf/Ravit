@@ -44,6 +44,9 @@ export default function ProfileScreen(props, { navigation }) {
 
         //Get all necessary data
         await getAllUserPosts()
+
+        await setPostsQuantity(Object.keys(posts).length)
+        
         await getFollowersQuantity()
         await getFollowingQuantity()
 
@@ -87,8 +90,8 @@ export default function ProfileScreen(props, { navigation }) {
             await setPosts(allPosts)
         }
         const totalProps = Object.keys(posts).length
-        //console.log(totalProps)
-        await setPostsQuantity(totalProps)
+        console.log(totalProps)
+        await setPostsQuantity(Object.keys(posts).length)
 
     }
 

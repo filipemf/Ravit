@@ -160,21 +160,22 @@ render(){
                   <Text style={styles.name}>{this.state.name}</Text>
                 </View>
 
-                <View style={{alignSelf:'center', alignContent:'center', alignItems:'center', marginTop:20, flexDirection:'row' }}>
+                <View style={{alignSelf:'center', alignContent:'center', alignItems:'center', marginTop:45, flexDirection:'row'}}>
                   <TouchableOpacity style={{bottom: -15,  flexDirection:'column', backgroundColor:'#116673', padding:10, borderRadius: 5}} onPress={this.handleRemoveOrFollow}>
                     
                     {this.state.isFollowing?
-                      <Text style={{color: "#fff"}}>Clique para parar de seguir</Text>
+                      <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: "#fff", marginRight: 10, fontFamily:'Helvetica-Nue', alignSelf:'center'}}>Clique para parar de seguir</Text>
+                        <FontAwesome5 name="user-friends" size={28} color="#fff"/>
+                      </View>
                     :
-                    <Text style={{color: "#fff"}}>Clique para começar a seguir</Text>
+                      <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: "#fff", marginRight: 10, fontFamily:'Helvetica-Nue', alignSelf:'center'}}>Clique para começar a seguir</Text>
+                        <Ionicons name="ios-person-add"  size={32} color="#fff" />
+                      </View>
+
                     }
                   </TouchableOpacity>
-
-                  {this.state.isFollowing?
-                    <FontAwesome5 name="user-friends" size={28} color="#73788B" style={{top:12,left:35}}/>
-                    :
-                    <Ionicons name="ios-person-add"  size={32} color="#73788B" style={{top: 12,left:35}}/>
-                  }
 
                 </View>
               </View>
