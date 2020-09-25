@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }) {
                   }}
                 >
                   <View>
-                    <Text style={styles.name}>{post.username}</Text>
+                    <Text style={styles.name}>{post.username} - {post.level}</Text>
                     <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>OUTROS</Text>}</Text>
                     <Text style={styles.timestamp}>
                       {moment(post.timestamp).fromNow()}
@@ -117,7 +117,8 @@ export default function HomeScreen({ navigation }) {
 
                 </View>
                 <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16 }}>{post.titleText}</Text>
-                <Text numberOfLines={4} style={styles.post}>{post.text}</Text>
+                {post.text!=""?
+                  <Text numberOfLines={4} style={styles.post}>{post.text}</Text>:<></>}
                 <Image
                   source={{ uri: post.image }}
                   style={styles.postImage}
@@ -220,9 +221,9 @@ export default function HomeScreen({ navigation }) {
 
 
           
-          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row'}}>
-            <Text style={{marginTop: 12, right: 10, fontFamily: 'Helvetica-Nue'}}>Procurar...</Text>
-            <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 10, right: 25 }} />
+          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
+            <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>Procurar...</Text>
+            <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
           </TouchableOpacity>
 
         </View>

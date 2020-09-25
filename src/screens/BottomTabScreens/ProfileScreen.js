@@ -10,6 +10,7 @@ const numColumns = 2
 import Fire from '../../../Fire'
 import MyAccount from './MyAccount'
 import LevelUpScreen from '../../components/LevelUpScreen'
+import { set } from 'react-native-reanimated';
 
 export default function ProfileScreen(props, { navigation }) {
     const [todoVisible, setTodoVisible] = useState(false);
@@ -21,6 +22,9 @@ export default function ProfileScreen(props, { navigation }) {
     const [postsQuantity, setPostsQuantity] = useState(0);
     const [followers, setFollowers] = useState(0);
     const [following, setFollowing] = useState(0);
+
+    const [level, setLevel] = useState(1)
+    const [xp, setXp] = useState(0)
 
     const [isFetching, setIsFetching] = useState(false);
 
@@ -40,7 +44,8 @@ export default function ProfileScreen(props, { navigation }) {
                 await setUser(doc.data())
             });
 
-        await setIsLoading(false)
+        
+
 
         //Get all necessary data
         await getAllUserPosts()
@@ -51,7 +56,10 @@ export default function ProfileScreen(props, { navigation }) {
         await getFollowingQuantity()
 
 
+        await setIsLoading(false)
+
     }
+
 
     const getAllUserPosts = async () => {
         const user = props.uid || Fire.shared.uid
@@ -202,8 +210,8 @@ export default function ProfileScreen(props, { navigation }) {
 
 
                         <View style={{ flexDirection: 'row', top: 60, right: 80, marginTop: 30 }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#00ccff', fontWeight: 'bold' }}>1</Text> </Text>
-                            <View style={[styles.progressBar]}><Text style={{ alignSelf: 'center', fontWeight: 'bold', color: '#000' }}>0/100</Text></View>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#00ccff', fontWeight: 'bold' }}>{user.level}</Text> </Text>
+                            <View style={[styles.progressBar]}><Text style={{ alignSelf: 'center', fontWeight: 'bold', color: '#000' }}>{user.experience}/100</Text></View>
                         </View>
 
                     </View>

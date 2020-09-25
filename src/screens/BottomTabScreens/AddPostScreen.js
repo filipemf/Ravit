@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StatusBar, View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList} from 'react-native'
+import { Modal, StatusBar, View, SafeAreaView, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import Fire from '../../../Fire'
@@ -12,7 +12,10 @@ import Colors from '../../utils/Colors'
 import { ScrollView } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
 
+import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
+import LevelUpScreen from '../../components/LevelUpScreen'
 
 const numColumns = 4
 
@@ -75,6 +78,7 @@ export default function PostScreen(props, { navigation }) {
   }
 
   const handlePost = async () => {
+    await setLoading(true)
     if (typeOfPost == "RECIPE") {
       if (titleText == "") {
         return alert("Por favor, escreva um título.")
@@ -103,23 +107,63 @@ export default function PostScreen(props, { navigation }) {
     }
 
     const user = props.uid || Fire.shared.uid
-    await firebase.firestore()
+    let allData = await firebase.firestore()
       .collection("users")
       .doc(user)
-      .onSnapshot(async doc => {
-        const usernameData = doc.data().username
-        console.log(usernameData)
-        Fire.shared
-          .addPost({ typeOfPost: typeOfPost, text: text.trim(), ingredients: ingredients.trim(), prepareMode: prepareMode.trim(), localUri: image, username: usernameData, titleText: titleText.trim(), tags: tags })
-          .then(async ref => {
-            await eraseAllFields()
-            navigateToHome()
-          })
-          .catch(error => {
-            alert(error);
-          });
+      .get()
+    let username = allData.data().username
+    
+    await Fire.shared
+      .addPost({ typeOfPost: typeOfPost, text: text.trim(), ingredients: ingredients.trim(), prepareMode: prepareMode.trim(), localUri: image, username: username, titleText: titleText.trim(), tags: tags })
+      .then(async ref => {
+        //Adicionando 
+        await Fire.shared.firestore.collection('users').doc(user).get().then(async doc => {
+          let userLevel = await doc.data().level
+          let userExperience = await doc.data().experience
 
+          if (userExperience < 100) {
+            if (userExperience + 2 < 100) {
+              await Fire.shared.firestore.collection('users').doc(user).set({
+                experience: userExperience + 2
+              }, { merge: true })
+
+              showMessage({
+                message: "Parabéns!🥳",
+                description: "Você acaba de adquirir 2 pontos de experiencia. Continue assim! 😄",
+                type: "default",
+                backgroundColor: "#2be381", // background color
+                color: "#fff", // text color
+              })
+              // .then(() => {
+              //   setTimeout(() => {
+              //     this.props.closeModal()
+              //   }, 500);
+              // })
+            }
+            else {
+              let untilExperience = 100 - userExperience
+              let finalXp = 2 - untilExperience
+
+              await Fire.shared.firestore.collection('users').doc(user).set({
+                experience: finalXp,
+                level: userLevel + 1
+              }, { merge: true })
+
+              this.toggleLevelUpModal()
+
+            }
+          }
+        })
+
+        await eraseAllFields()
+        navigateToHome()
       })
+      .catch(error => {
+        alert(error);
+      });
+
+
+    await setLoading(true)
   };
 
   const togglePostType = async () => {
@@ -177,161 +221,165 @@ export default function PostScreen(props, { navigation }) {
     props.navigation.goBack(null)
   }
 
-  if(isLoading==false){
-
+  if(isLoading==true){
+    return(
+      <ActivityIndicator size="large" color="purple"/>
+    )
+    
   }
   else{
-    <ActivityIndicator size="large" color="purple"/>
-
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="rgba(222, 222, 222, 0.7)" barStyle="dark-content" />
-
-      <View style={styles.header}>
-        <TouchableOpacity onPress={letsGo}>
-          <Ionicons name='md-arrow-back' size={24} color='#7a7a7a'></Ionicons>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={togglePostType}>
-          <Text style={{ fontWeight: 'bold', left: 18 }}>{typeOfPost == 'RECIPE' ? <Text>RECEITAS</Text> : <Text>OUTROS</Text>}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={handlePost}>
-          <Text style={{ fontWeight: '300', fontSize: 20, fontFamily: 'Helvetica-Nue-Condensed' }}>POSTAR</Text>
-        </TouchableOpacity>
-      </View>
-
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-
-        <View style={styles.inputTitleContainer}>
-          <TextInput
-            autoFocus={false}
-            multiline={true}
-            maxLength={48}
-            numberOfLines={4}
-            style={{ fontSize: 28, fontWeight: 'bold', marginHorizontal: 20, left: 30, bottom: 15 }}
-            autoCapitalize="words"
-            autoCapitalize="sentences"
-            placeholder={typeOfPost == 'RECIPE' ? 'Qual será a sua receita?' : 'Qual será o seu post?'}
-            onChangeText={titleText => setTitleText(titleText)}
-            value={titleText}
-          ></TextInput>
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="rgba(222, 222, 222, 0.7)" barStyle="dark-content" />
+  
+        <View style={styles.header}>
+          <TouchableOpacity onPress={letsGo}>
+            <Ionicons name='md-arrow-back' size={24} color='#7a7a7a'></Ionicons>
+          </TouchableOpacity>
+  
+          <TouchableOpacity onPress={togglePostType}>
+            <Text style={{ fontWeight: 'bold', left: 18 }}>{typeOfPost == 'RECIPE' ? <Text>RECEITAS</Text> : <Text>OUTROS</Text>}</Text>
+          </TouchableOpacity>
+  
+          <TouchableOpacity onPress={handlePost}>
+            <Text style={{ fontWeight: '300', fontSize: 20, fontFamily: 'Helvetica-Nue-Condensed' }}>POSTAR</Text>
+          </TouchableOpacity>
         </View>
-
-        <View style={styles.inputPhotoContainer}>
-          <Image source={avatar ? { uri: avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
-        </View>
-
-        {typeOfPost == 'RECIPE' ?
-          <>
-            <Text style={{ alignSelf: 'center', fontFamily: 'Helvetica-Nue-Condensed', fontSize: 20 }}>Ingredientes: </Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                autoFocus={false}
-                multiline={true}
-                numberOfLines={4}
-                style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
-                onFocus={ingredients == "" ? () => setIngredients("■") : console.log()}
-                onKeyPress={({ nativeEvent }) => {
-                  nativeEvent.key === 'Enter' ? setIngredients(ingredients + "■") : <></> //other action
-                }}
-                placeholder='Insira aqui os ingredientes usados'
-                onChangeText={ingredients => setIngredients(ingredients)}
-                value={ingredients}>
-              </TextInput>
-            </View>
-
-            <View style={{ margin: 15 }}></View>
-
-            <Text style={{ alignSelf: 'center', fontFamily: 'Helvetica-Nue-Condensed', fontSize: 20 }}>Modo de preparo: </Text>
-            <View style={styles.inputContainer}>
-              <TextInput
-                autoFocus={false}
-                multiline={true}
-                numberOfLines={4}
-                style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
-                placeholder='Insira aqui os ingredientes usados'
-                onFocus={prepareMode == "" ? () => setPrepareMode("■") : console.log()}
-                onKeyPress={({ nativeEvent }) => {
-                  nativeEvent.key === 'Enter' ? setPrepareMode(prepareMode + "■") : <></> //other action
-                }}
-                onChangeText={prepareMode => setPrepareMode(prepareMode)}
-                value={prepareMode}
-              ></TextInput>
-            </View>
-          </>
-          :
-          <View style={styles.inputContainer}>
+  
+  
+        <ScrollView showsVerticalScrollIndicator={false}>
+  
+          <View style={styles.inputTitleContainer}>
             <TextInput
               autoFocus={false}
               multiline={true}
+              maxLength={48}
               numberOfLines={4}
-              style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
-              placeholder='Quer compartilhar algo?'
-              onChangeText={text => setText(text)}
-              value={text}>
-            </TextInput>
-          </View>}
-
-
-
-        <View style={{ marginHorizontal: 15, marginTop: 12, height: 300, bottom: 20, top: 30, backgroundColor: "rgba(222, 222, 222, 3.8)" }}>
-          {image != null ? <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /> : <View></View>}
-        </View>
-
-        <TouchableOpacity style={styles.photo, { botom: 400, top: -250, left: 165, marginBottom: 50 }} onPress={pickImage}>
-          <Ionicons name='md-camera' size={32} color='#c2c2c2'></Ionicons>
-        </TouchableOpacity>
-
-        {tags && tags.length > 0 ? <Text style={{ alignSelf: 'center', bottom: 35, fontFamily: 'Helvetica-Nue-Condensed', fontSize: 18 }}>Minhas tags: </Text> : <></>}
-        
-        {tags != [] ? tags.map(({ item }) => {
-          return (
-            <View style={{ flexDirection: 'column', margin: 3 }}>
-              <Text style={{
-                alignSelf: 'center',
-                bottom: 30,
-                color: "#FFF", backgroundColor: item.color
-              }}><Text style={{ color: "#FFF", fontFamily: 'Helvetica-Nue-Bold' }}>{item.name}</Text></Text>
-
-            </View>
-          )
-        }) : <View></View>}
-
-
-        <View style={{ flex: 1, marginBottom: 5, padding: 10 }}>
-
-          <FlatList
-            data={backgroundColor}
-            extraData={backgroundColor}
-            numColumns={numColumns}
-            renderItem={(color) => renderColors(color.item)} />
-        </View>
-
-        <View style={{ marginBottom: 5, alignItems: 'center' }}>
-          <TouchableOpacity style={{ backgroundColor: "#f03553", marginHorizontal: 90, width: '35%', height: 50, borderRadius: 4 }} onPress={() => {
-            allBackgroundColor = [
-              { key: 1, color: "#5CD859", name: "sem-açucar" },
-              { key: 2, color: "#24A6D9", name: "sem-glutem" },
-              { key: 3, color: "#595BD9", name: "esporte" },
-              { key: 4, color: "#8022D9", name: "sem-sal" },
-              { key: 5, color: "#D159D8", name: "aleatório" },
-              { key: 6, color: "#D85963", name: "doce" },
-              { key: 7, color: "#D88559", name: "salgado" }
-            ]
-            setTags([])
-          }}>
-            <Text style={{ color: '#fff', textAlign: 'center', paddingVertical: 15, fontFamily: 'Helvetica-Nue-Bold' }}>Apagar</Text>
+              style={{ fontSize: 28, fontWeight: 'bold', marginHorizontal: 20, left: 30, bottom: 15 }}
+              autoCapitalize="words"
+              autoCapitalize="sentences"
+              placeholder={typeOfPost == 'RECIPE' ? 'Qual será a sua receita?' : 'Qual será o seu post?'}
+              onChangeText={titleText => setTitleText(titleText)}
+              value={titleText}
+            ></TextInput>
+          </View>
+  
+          <View style={styles.inputPhotoContainer}>
+            <Image source={avatar ? { uri: avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
+          </View>
+  
+          {typeOfPost == 'RECIPE' ?
+            <>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Helvetica-Nue-Condensed', fontSize: 20 }}>Ingredientes: </Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  autoFocus={false}
+                  multiline={true}
+                  numberOfLines={4}
+                  style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
+                  onFocus={ingredients == "" ? () => setIngredients("■") : console.log()}
+                  onKeyPress={({ nativeEvent }) => {
+                    nativeEvent.key === 'Enter' ? setIngredients(ingredients + "■") : <></> //other action
+                  }}
+                  placeholder='Insira aqui os ingredientes usados'
+                  onChangeText={ingredients => setIngredients(ingredients)}
+                  value={ingredients}>
+                </TextInput>
+              </View>
+  
+              <View style={{ margin: 15 }}></View>
+  
+              <Text style={{ alignSelf: 'center', fontFamily: 'Helvetica-Nue-Condensed', fontSize: 20 }}>Modo de preparo: </Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  autoFocus={false}
+                  multiline={true}
+                  numberOfLines={4}
+                  style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
+                  placeholder='Insira aqui os ingredientes usados'
+                  onFocus={prepareMode == "" ? () => setPrepareMode("■") : console.log()}
+                  onKeyPress={({ nativeEvent }) => {
+                    nativeEvent.key === 'Enter' ? setPrepareMode(prepareMode + "■") : <></> //other action
+                  }}
+                  onChangeText={prepareMode => setPrepareMode(prepareMode)}
+                  value={prepareMode}
+                ></TextInput>
+              </View>
+            </>
+            :
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoFocus={false}
+                multiline={true}
+                numberOfLines={4}
+                style={{ flex: 1, fontWeight: "600", marginLeft: 20, fontSize: 18 }}
+                placeholder='Quer compartilhar algo?'
+                onChangeText={text => setText(text)}
+                value={text}>
+              </TextInput>
+            </View>}
+  
+  
+  
+          <View style={{ marginHorizontal: 15, marginTop: 12, height: 300, bottom: 20, top: 30, backgroundColor: "rgba(222, 222, 222, 3.8)" }}>
+            {image != null ? <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /> : <View></View>}
+          </View>
+  
+          <TouchableOpacity style={styles.photo, { botom: 400, top: -250, left: 165, marginBottom: 50 }} onPress={pickImage}>
+            <Ionicons name='md-camera' size={32} color='#c2c2c2'></Ionicons>
           </TouchableOpacity>
-        </View>
+  
+          {tags && tags.length > 0 ? <Text style={{ alignSelf: 'center', bottom: 35, fontFamily: 'Helvetica-Nue-Condensed', fontSize: 18 }}>Minhas tags: </Text> : <></>}
+          
+          {tags != [] ? tags.map(({ item }) => {
+            return (
+              <View style={{ flexDirection: 'column', margin: 3 }}>
+                <Text style={{
+                  alignSelf: 'center',
+                  bottom: 30,
+                  color: "#FFF", backgroundColor: item.color
+                }}><Text style={{ color: "#FFF", fontFamily: 'Helvetica-Nue-Bold' }}>{item.name}</Text></Text>
+  
+              </View>
+            )
+          }) : <View></View>}
+  
+  
+          <View style={{ flex: 1, marginBottom: 5, padding: 10 }}>
+  
+            <FlatList
+              data={backgroundColor}
+              extraData={backgroundColor}
+              numColumns={numColumns}
+              renderItem={(color) => renderColors(color.item)} />
+          </View>
+  
+          <View style={{ marginBottom: 5, alignItems: 'center' }}>
+            <TouchableOpacity style={{ backgroundColor: "#f03553", marginHorizontal: 90, width: '35%', height: 50, borderRadius: 4 }} onPress={() => {
+              allBackgroundColor = [
+                { key: 1, color: "#5CD859", name: "sem-açucar" },
+                { key: 2, color: "#24A6D9", name: "sem-glutem" },
+                { key: 3, color: "#595BD9", name: "esporte" },
+                { key: 4, color: "#8022D9", name: "sem-sal" },
+                { key: 5, color: "#D159D8", name: "aleatório" },
+                { key: 6, color: "#D85963", name: "doce" },
+                { key: 7, color: "#D88559", name: "salgado" }
+              ]
+              setTags([])
+            }}>
+              <Text style={{ color: '#fff', textAlign: 'center', paddingVertical: 15, fontFamily: 'Helvetica-Nue-Bold' }}>Apagar</Text>
+            </TouchableOpacity>
+          </View>
 
-      </ScrollView>
+          <FlashMessage position="bottom" style={{marginBottom:160}} titleStyle={{fontFamily:'Helvetica-Nue-Condensed', fontSize:19}} textStyle={{fontFamily:'Helvetica-Nue', fontSize: 16}}/>
+  
+        </ScrollView>
+  
+      </SafeAreaView>
+    );
+  }
 
-    </SafeAreaView>
-  );
+  
 }
 
 const styles = StyleSheet.create({

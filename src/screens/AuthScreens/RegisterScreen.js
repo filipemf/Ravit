@@ -69,7 +69,7 @@ export default class RegisterScreen extends React.Component{
               <View style={{bottom: 50}}>
                 <View>
                   <Text style={styles.inputTitle}>Nome completo</Text>
-                    <TextInput style={styles.input} 
+                    <TextInput style={styles.input}
                       placeholder="Este será o nome que aparecerá na tela"
                       onChangeText={name =>
                       this.setState({ user: { ...this.state.user, name } })
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     },
     greeting: {
       fontSize: 18,
-      fontWeight: '500',
+      fontWeight: 'bold',
       textAlign: 'center',
       color: '#000',
       fontFamily: 'Helvetica-Nue'
@@ -155,15 +155,17 @@ const styles = StyleSheet.create({
     },
     inputTitle: {
       color: '#585a61',
-      fontSize: 15,
-      fontFamily: 'Helvetica-Nue-Condensed'
+      fontWeight:'bold',
+      fontSize: 18,
+      fontFamily: 'Helvetica-Nue'
     },
     input: {
       borderBottomColor: '#8a8f9e',
       borderBottomWidth: StyleSheet.hairlineWidth,
       height: 40,
-      fontSize: 16,
-      color: '#161f3d'
+      fontSize: 17,
+      fontFamily:'Helvetica-Nue',
+      color: '#161f3d',
     },
     errorMessage: {
       height: 72,

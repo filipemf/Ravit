@@ -176,7 +176,7 @@ export default class LoginScreen extends React.Component {
                     <StatusBar backgroundColor="transparent" barStyle="dark-content" />
                    
 
-                    <Text style={{fontSize: 42, fontFamily:'Helvetica-Nue', color: "#000", alignSelf: 'center', marginTop: 15, marginBottom: -15}}>Ravit</Text>
+                    <Text style={{fontSize: 42, fontFamily:'Helvetica-Nue', color: "#000", alignSelf: 'center', marginTop: 15, marginBottom: -15}}>Havit</Text>
 
                     <View style={styles.errorMessage}>
                         {this.state.errorMessage && <Text style={styles.errorLog}>{this.state.errorMessage}</Text>}
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     },
     inputTitle: {
         color: '#4a4a4a',
-        fontSize: 16,
+        fontSize: 20,
         //textTransform: 'uppercase'
         fontFamily: 'Helvetica-Nue-Condensed'
     },
@@ -298,7 +298,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         height: 60,
         fontSize: 21,
-        color: '#161F3D'
+        color: '#161F3D',
+        fontFamily:'Helvetica-Nue'
     },
     errorLog: {
         color: '#E9446A',

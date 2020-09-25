@@ -1,20 +1,72 @@
 import React from 'react'
-import { FlatList, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, Animated } from 'react-native'
+import { Modal, Button, FlatList, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, TextInput, KeyboardAvoidingView, Keyboard, Animated } from 'react-native'
 import { AntDesign, Ionicons } from '@expo/vector-icons'
 import Colors from '../../utils/Colors'
 
 import { Swipeable } from 'react-native-gesture-handler'
 
+import Fire from '../../../Fire'
+
+import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
+
+import LevelUpScreen from '../../components/LevelUpScreen'
+
 export default class ToDoModal extends React.Component {
     state = {
-        newTodo: ""
+        newTodo: "",
+        levelUpTodo: false
+    }
+
+    toggleLevelUpModal = async () => {
+        this.setState({levelUpTodo: !this.state.levelUpTodo})
     }
 
     toggleTodoCompleted = async index => {
+        const user = this.props.uid || Fire.shared.uid
+
         let list = this.props.list
         list.todos[index].completed = !list.todos[index].completed
 
-        this.props.updateList(list)
+        await this.props.updateList(list)
+
+        await Fire.shared.firestore.collection('users').doc(user).get().then(async doc=>{
+            let userLevel = await doc.data().level
+            let userExperience = await doc.data().experience
+
+            if(userExperience<100&&list.todos[index].completed==true){
+                if(userExperience+5<100){
+                    await Fire.shared.firestore.collection('users').doc(user).set({
+                        experience: userExperience+5
+                    }, {merge: true})
+
+                    showMessage({
+                        message: "Parabéns!🥳",
+                        description: "Você acaba de adquirir 5 pontos de experiencia. Continue assim! 😄",
+                        type: "default",
+                        backgroundColor: "#2be381", // background color
+                        color: "#fff", // text color
+                    }).then(()=>{
+                        setTimeout(() => {
+                            this.props.closeModal()
+                        }, 500);
+                    })
+                }
+                else{
+                    let untilExperience = 100-userExperience
+                    let finalXp = 5-untilExperience
+
+                    await Fire.shared.firestore.collection('users').doc(user).set({
+                        experience: finalXp,
+                        level: userLevel+1
+                    }, {merge:true})
+
+                    this.toggleLevelUpModal()
+
+                }
+            }
+        })
+
     }
 
     addTodo = async () => {
@@ -92,6 +144,10 @@ export default class ToDoModal extends React.Component {
                         </View>
                     </View>
 
+                    <Modal animationType="slide" visible={this.state.levelUpTodo}>
+                        <LevelUpScreen closeModal={() => this.toggleLevelUpModal()} />
+                    </Modal>
+
                     <View style={[styles.section, { flex: 3, marginVertical: 16 }]}>
                         <FlatList data={list.todos}
                             renderItem={({ item, index }) => this.renderToDo(item, index)}
@@ -105,6 +161,8 @@ export default class ToDoModal extends React.Component {
                             <AntDesign name="plus" size={16} color={Colors.white} />
                         </TouchableOpacity>
                     </View>
+
+                    <FlashMessage position="bottom" style={{marginBottom:160}} titleStyle={{fontFamily:'Helvetica-Nue-Condensed', fontSize:19}} textStyle={{fontFamily:'Helvetica-Nue', fontSize: 16}}/>
                     
                 </SafeAreaView>
             </KeyboardAvoidingView>

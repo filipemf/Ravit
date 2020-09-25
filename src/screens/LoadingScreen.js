@@ -14,7 +14,7 @@ export default class LoadingScreen extends React.Component{
     render(){
         return(
             <View style={[styles.loading, {flexDirection:'row'}]}>
-                <Text style={{bottom: 90, fontSize: 26, color: '#000', fontFamily:'Helvetica-Nue-Condensed'}}>Carregando...</Text>
+                <Text style={{bottom: 90, fontSize: 26, color: '#000', fontFamily:'Helvetica-Nue'}}>Carregando...</Text>
                 <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../assets/Animations/animation-load.json")} animationStyle={{width: 60,    height: 60}} speed={1}/>
             </View>
         )

@@ -26,11 +26,11 @@ export default class PeopleScreen extends React.Component{
   };
   }
   componentWillMount(){
-  
+  console.log("aaaaaa")
 }
 
   async componentDidMount(){
-    await this.setState({isLoading: true})
+    //await this.setState({isLoading: true})
     
     await this.getFollowersQuantity()
     await this.getFollowingQuantity()

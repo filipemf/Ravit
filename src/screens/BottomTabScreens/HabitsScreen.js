@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StatusBar, View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, Animated, Dimensions } from 'react-native'
+import { Button, StatusBar, View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, Animated, Dimensions } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import colors from '../../utils/Colors'
 import ToDoList from '../../components/HabitsComponent/ToDoList'
@@ -8,8 +8,10 @@ import Fire from '../../../Fire'
 
 import LottieView from 'lottie-react-native';
 
+import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
 
-export default function HabitsScreen({ navigation }) {
+export default function HabitsScreen(props, { navigation }) {
     const [addTodoVisible, setAddTodoVisible] = useState(false);
     const [user, setUser] = useState({});
     const [lists, setLists] = useState([]);
@@ -33,7 +35,7 @@ export default function HabitsScreen({ navigation }) {
 
     const renderList = (list) => {
         return (
-            <ToDoList list={list} updateList={updateList} />
+            <ToDoList list={list} updateList={updateList}/>
         )
     }
 
@@ -55,8 +57,20 @@ export default function HabitsScreen({ navigation }) {
             <StatusBar backgroundColor="transparent" barStyle="dark-content" />
 
             <Modal animationType="slide" visible={addTodoVisible}>
-                <AddListModal closeModal={() => toggleAddTodoModal()} addList={() => addList()} />
+                <AddListModal closeModal={() => toggleAddTodoModal()} addList={() => addList()}  />
             </Modal>
+            <Button
+                        title="OODFODKFO"
+                        onPress={()=>
+                            showMessage({
+                                message: "Parabéns!🥳",
+                                description: "Você acaba de adquirir 5 pontos de experiencia. Continue assim! 😄",
+                                type: "default",
+                                backgroundColor: "#2be381", // background color
+                                color: "#fff", // text color
+                            })
+                        }
+                    />
 
             <View style={{ marginVertical: 28 }}>
                 <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold', alignSelf: 'center', fontSize: 28, marginBottom: 15 }}>Metas e Desafios</Text>
@@ -84,6 +98,8 @@ export default function HabitsScreen({ navigation }) {
                 <TouchableOpacity style={styles.addList} onPress={() => toggleAddTodoModal()} onRequestClose={() => toggleAddTodoModal()}>
                     <Text style={{fontSize: 22, fontWeight: 'bold'}}>+</Text>
                 </TouchableOpacity>
+
+                <FlashMessage position="bottom" style={{marginBottom:160}} titleStyle={{fontFamily:'Helvetica-Nue-Condensed', fontSize:19}} textStyle={{fontFamily:'Helvetica-Nue', fontSize: 16}}/>
 
             </View>
 

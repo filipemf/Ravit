@@ -241,6 +241,7 @@ class Fire {
       await this.insertFollower(userId)
       return true
     }
+
     stopToFollow = async (userId) => {
       await this.removeFollower(userId)
       await this.removeFollowing(userId)
@@ -268,7 +269,6 @@ class Fire {
       }
     }
 
-
     insertFollower= async (userId) => {
       console.log(userId)
       const docFollower = await this.firestore.collection('followers').doc(userId).get()
@@ -290,7 +290,6 @@ class Fire {
             .then(async () => {console.log("inserido na lista de followers"); return true}).catch(error => {console.log(error); return false});
         }
     }
-
 
     removeFollowing = async (userId)=> {
       const docFollowing = await this.firestore.collection('following').doc(this.uid).get()
@@ -371,8 +370,6 @@ class Fire {
       }
     }
        
-
-
     getFollowersQuantity = async (userId)=>{
       const docResult = await this.firestore.collection('followers').doc(userId).get()
       if(docResult.exists){
@@ -432,7 +429,7 @@ class Fire {
         let db = await this.firestore.collection("users").doc(this.uid)
 
         let number = Math.floor(10 + Math.random() * 90)
-        let username = user.additionalUserInfo.profile.first_name+user.additionalUserInfo.profile.last_name+"_"+number.toString()
+        let username = await user.additionalUserInfo.profile.first_name+user.additionalUserInfo.profile.last_name+"_"+number.toString()
 
         if(user.additionalUserInfo.isNewUser==true){
           remoteUri = await this.uploadPhotoAsync(user.additionalUserInfo.profile.picture.data.url, `avatars/${this.uid}`)
@@ -440,8 +437,11 @@ class Fire {
             name: user.additionalUserInfo.profile.name,
             avatar: remoteUri,
             username: username.toLowerCase(),
-            uid: this.uid
+            uid: this.uid,
+            level:1,
+            experience:0
           })
+
         }
         
       }
@@ -462,7 +462,7 @@ class Fire {
         let db = await this.firestore.collection("users").doc(this.uid)
 
         let number = Math.floor(10 + Math.random() * 90)
-        let username = user.additionalUserInfo.profile.given_name+user.additionalUserInfo.profile.family_name+"_"+number.toString()
+        let username = await user.additionalUserInfo.profile.given_name+user.additionalUserInfo.profile.family_name+"_"+number.toString()
 
         if(user.additionalUserInfo.isNewUser==true){
           remoteUri = await this.uploadPhotoAsync(user.additionalUserInfo.profile.picture, `avatars/${this.uid}`)
@@ -470,10 +470,12 @@ class Fire {
             name: user.additionalUserInfo.profile.name,
             avatar: remoteUri,
             username: username.toLowerCase(),
-            uid: this.uid
+            uid: this.uid,
+            level:1,
+            experience:0
           })
-        }
         
+        }
       }
       catch(e){
         console.log(e)
@@ -498,7 +500,9 @@ class Fire {
                 name: user.name,
                 avatar: null,
                 username: user.username,
-                uid: this.uid
+                uid: this.uid,
+                level:1,
+                experience:0
               })
               if (user.avatar){
                 remoteUri = await this.uploadPhotoAsync(user.avatar, `avatars/${this.uid}`)

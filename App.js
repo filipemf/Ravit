@@ -35,7 +35,7 @@ import SearchResultScreen from './src/screens/SearchScreens/PeopleScreen'
 import OtherPosts from './src/screens/PostScreens/OtherPosts'
 import RecipesPosts from './src/screens/PostScreens/RecipesPosts'
 
-
+import TodosModal from './src/components/HabitsComponent/ToDoModal'
 
 if (!global.btoa) {  global.btoa = encode }
 
@@ -133,6 +133,9 @@ const AppContainer = createStackNavigator(
     },
     RecipesPosts:{
       screen: RecipesPosts
+    },
+    TodosModal:{
+      screen:TodosModal
     },
     InitialScreen:{
       screen: InitialScreen,

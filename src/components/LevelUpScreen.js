@@ -23,9 +23,13 @@ export default class LevelUpScreen extends React.Component{
         
         this.playAnimation()
 
-        setTimeout(() => {
-            this.playAnimation2()
+        await setTimeout(async () => {
+            await this.playAnimation2()
         }, 1000);
+
+        setTimeout(() => {
+            this.props.closeModal()
+        }, 2000);
 
         
     }
