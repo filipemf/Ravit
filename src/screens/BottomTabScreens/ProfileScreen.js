@@ -7,6 +7,8 @@ const firebase = require("firebase")
 
 const numColumns = 2
 
+import ProgressBar from 'react-native-progress/Bar';
+
 import Fire from '../../../Fire'
 import MyAccount from './MyAccount'
 import LevelUpScreen from '../../components/LevelUpScreen'
@@ -44,17 +46,11 @@ export default function ProfileScreen(props, { navigation }) {
                 await setUser(doc.data())
             });
 
-        
-
-
         //Get all necessary data
         await getAllUserPosts()
-
-        await setPostsQuantity(Object.keys(posts).length)
         
         await getFollowersQuantity()
         await getFollowingQuantity()
-
 
         await setIsLoading(false)
 
@@ -87,6 +83,10 @@ export default function ProfileScreen(props, { navigation }) {
                     values.tags = postData.tags
 
                     allPosts.push(values)
+                    const totalProps = await Object.keys(allPosts).length
+                    console.log(totalProps)
+                    await setPostsQuantity(totalProps)
+
                 } else {
                     console.log("deu errado")
                 }
@@ -97,9 +97,6 @@ export default function ProfileScreen(props, { navigation }) {
         if (allPosts != []) {
             await setPosts(allPosts)
         }
-        const totalProps = Object.keys(posts).length
-        console.log(totalProps)
-        await setPostsQuantity(Object.keys(posts).length)
 
     }
 
@@ -115,7 +112,7 @@ export default function ProfileScreen(props, { navigation }) {
 
     const onRefresh = async () => {
         await setIsFetching(true)
-        await setPosts(await this.getAllUserPosts())
+        await initialLoad()
         await setIsFetching(false)
     }
 
@@ -183,7 +180,6 @@ export default function ProfileScreen(props, { navigation }) {
                         <TouchableOpacity style={{ position: 'absolute', top: 10 }} onPress={() => AsyncSignOutAlert()}>
                             <Image source={user.avatar ? { uri: user.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
                         </TouchableOpacity>
-
                         <View style={styles.statsContainer}>
                             <View style={{ flexDirection: 'column', margin: 7 }}>
                                 <Text style={{ fontFamily: 'Helvetica-Nue', fontSize: 16, color: "#000" }}>Posts</Text>
@@ -202,16 +198,17 @@ export default function ProfileScreen(props, { navigation }) {
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row', width: ((Dimensions.get('window').width * 65) / 100), left: 10, marginBottom: 30 }}>
+                    <View style={{ flexDirection: 'row',left: 10, marginBottom: 30}}>
 
                         <TouchableOpacity onPress={() => toggleAddTodoModal()} onRequestClose={() => toggleAddTodoModal()} style={{ left: 140, marginTop: 20, marginBottom: 50 }}>
                             <Text style={[styles.name], { position: 'relative', fontFamily: 'Helvetica-Nue-Condensed', fontWeight: '900', fontSize: 22, color: '#000' }}>{user.name}</Text>
                         </TouchableOpacity>
 
 
-                        <View style={{ flexDirection: 'row', top: 60, right: 80, marginTop: 30 }}>
+                        <View style={{ flexDirection: 'row', top: 60, right: 80, marginTop: 30, flex:1}}>
                             <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#00ccff', fontWeight: 'bold' }}>{user.level}</Text> </Text>
-                            <View style={[styles.progressBar]}><Text style={{ alignSelf: 'center', fontWeight: 'bold', color: '#000' }}>{user.experience}/100</Text></View>
+                            <Text>{user.experience}/100</Text>
+                        
                         </View>
 
                     </View>
@@ -220,10 +217,14 @@ export default function ProfileScreen(props, { navigation }) {
                 <FlatList
                     style={{ backgroundColor: '#fff', marginTop: 5 }}
                     data={posts}
+
                     keyExtractor={(i, k) => k.toString()}
+
                     onRefresh={onRefresh}
                     refreshing={isFetching}
+
                     showsVerticalScrollIndicator={false}
+                    
                     numColumns={numColumns}
                     renderItem={renderPost}
                 />

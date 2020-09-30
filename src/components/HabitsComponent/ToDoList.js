@@ -64,7 +64,7 @@ export default class ToDoList extends React.Component {
 
                     <TouchableOpacity style={[styles.listContainer, { backgroundColor: list.color }]} onPress={() => this.toggleListModal()} onLongPress={() => this.AsyncDeleteAlert()}>
                         <View style={{}}>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-cafe"?-20:10, flexWrap:'wrap'}}>
+                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-cafe"?-20:-3, flexWrap:'wrap'}}>
                                 <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc"/>
                             </View>
 
@@ -86,7 +86,7 @@ export default class ToDoList extends React.Component {
                             </View>
 
                             <View style={{ alignItems: 'center', marginLeft: 20, top: 145, position: 'absolute', flexWrap:'wrap'}}>
-                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#525252', fontWeight:'bold'}}>adicionada há {date}</Text>
+                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#cccccc', fontWeight:'bold'}}>adicionada há {date}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>

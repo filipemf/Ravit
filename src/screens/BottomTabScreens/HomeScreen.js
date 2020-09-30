@@ -8,7 +8,7 @@ import AnimatedLoader from 'react-native-animated-loader';
 
 const firebase = require('firebase')
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen(props, { navigation }) {
   const [posts, setPosts] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [feedType, setFeedType] = useState("feed");
@@ -77,6 +77,15 @@ export default function HomeScreen({ navigation }) {
 
   const renderPost = post => {
 
+    
+
+    let theLevel = 1;
+    Fire.shared.firestore.collection('users').where('username', '==', post.username).get().then(async doc=>{
+      let levelzinho = await doc.data().level
+      console.log(levelzinho)
+      theLevel = levelzinho
+    })
+
     const tags = post.tags
 
     for (let i = 0; i < post.tags.length; i++) {
@@ -106,14 +115,16 @@ export default function HomeScreen({ navigation }) {
                   }}
                 >
                   <View>
-                    <Text style={styles.name}>{post.username} - {post.level}</Text>
+                    <Text style={styles.name}>{post.username} 
+                      <Text style={{fontSize:20}}> Level: {theLevel}</Text>
+                    </Text> 
                     <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>OUTROS</Text>}</Text>
                     <Text style={styles.timestamp}>
                       {moment(post.timestamp).fromNow()}
                     </Text>
                   </View>
 
-                  <Ionicons name="ios-more" size={24} style={{ right: 10 }} color="#73788B" />
+                  <Ionicons name="ios-more" size={24} style={{ right: 10, top:20}} color="#73788B" />
 
                 </View>
                 <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16 }}>{post.titleText}</Text>
