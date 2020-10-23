@@ -40,8 +40,8 @@ export default class RecipesPosts extends React.Component {
     this.textInput = React.createRef()
   }
 
-
   async componentDidMount() {
+    console.log(this.state.avatar)
     await this.setState({ isLoading: true }, async () => {
       await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
       await this.setState({ isLoading: false })
@@ -148,7 +148,7 @@ export default class RecipesPosts extends React.Component {
       return (
         <View style={styles.loading}>
           <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
-          <AnimatedLoader visible={this.state.isLoading} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/animation-postRecipe.json")} animationStyle={{ width: 100, height: 100 }} speed={1} />
+          <AnimatedLoader visible={this.state.isLoading} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
         </View>
       )
     }
@@ -162,7 +162,7 @@ export default class RecipesPosts extends React.Component {
             </TouchableOpacity>
 
             <TouchableOpacity style={{ left: '310%', top: 15, backgroundColor: "#fc034e", borderRadius: 4, padding: 10, height: 40, width: 85 }}>
-              <Text style={{ fontWeight: 'bold' }} onPress={this.sendCommentary}>Comentar</Text>
+              <Text style={{ fontWeight: 'bold', color:'#fff'}} onPress={this.sendCommentary}>Comentar</Text>
             </TouchableOpacity>
           </Back>
 

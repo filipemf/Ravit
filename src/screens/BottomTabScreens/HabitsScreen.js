@@ -39,15 +39,6 @@ export default function HabitsScreen(props, { navigation }) {
         )
     }
 
-    // const addList = async list => {
-    //     await Fire.shared.addList({
-    //         name: list.name,
-    //         timestamp: Fire.shared.timestamp,
-    //         color: list.color,
-    //         todos: []
-    //     })
-    // }
-
     const updateList = async list => {
         await Fire.shared.updateList(list)
     }
@@ -60,7 +51,7 @@ export default function HabitsScreen(props, { navigation }) {
                 <AddListModal closeModal={() => toggleAddTodoModal()} addList={() => addList()}  />
             </Modal>
             <Button
-                        title="OODFODKFO"
+                        title="Parabens"
                         onPress={()=>
                             showMessage({
                                 message: "Parabéns!🥳",

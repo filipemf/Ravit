@@ -181,14 +181,7 @@ render(){
               </View>
               
 
-                
-
-         
-
-
             </View>
-             
-             
             
               <View style={styles.statsContainer}>
 

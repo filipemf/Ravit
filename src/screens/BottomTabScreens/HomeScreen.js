@@ -69,16 +69,13 @@ export default function HomeScreen(props, { navigation }) {
 
   const handleOpenImage = (post) => {
     if (post.typeOfPost == "OUTROS") {
-      navigation.navigate("OtherPosts", post)
+      props.navigation.navigate("OtherPosts", post)
     } else {
-      navigation.navigate("RecipesPosts", post)
+      props.navigation.navigate("RecipesPosts", post)
     }
   }
 
   const renderPost = post => {
-
-    
-
     let theLevel = 1;
     Fire.shared.firestore.collection('users').where('username', '==', post.username).get().then(async doc=>{
       let levelzinho = await doc.data().level
@@ -116,7 +113,6 @@ export default function HomeScreen(props, { navigation }) {
                 >
                   <View>
                     <Text style={styles.name}>{post.username} 
-                      <Text style={{fontSize:20}}> Level: {theLevel}</Text>
                     </Text> 
                     <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>OUTROS</Text>}</Text>
                     <Text style={styles.timestamp}>
@@ -190,15 +186,6 @@ export default function HomeScreen(props, { navigation }) {
     }
   }
 
-  // const renderFilters = (item) => {
-  //   return (
-  //     <TouchableOpacity style={{ padding: 10, backgroundColor: stateTags.includes(item.name) ? "#595757" : item.color, margin: 5, borderRadius: 4 }} onPress={() => handleFilters(item)}>
-  //       <Text style={{ color: '#fff', fontFamily: 'Metropolis-Regular' }}>{item.name}</Text>
-  //     </TouchableOpacity>
-  //   )
-  // }
-
-
   const renderFilters = (item) => {
     return (
       <TouchableOpacity style={{ padding: 10, backgroundColor:  stateTags.includes(item.name) ? "#666666":"#000", margin: 5, borderRadius: 4}} onPress={() => handleFilters(item)}>
@@ -232,7 +219,7 @@ export default function HomeScreen(props, { navigation }) {
 
 
           
-          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
             <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>Procurar...</Text>
             <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
           </TouchableOpacity>
@@ -256,7 +243,7 @@ export default function HomeScreen(props, { navigation }) {
     return (
       <View style={[styles.loading, { flexDirection: 'row' }]}>
         <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
-        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/animation-load.json")} animationStyle={{ width: 60, height: 60 }} speed={1} />
+        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
       </View>
     )
   }
