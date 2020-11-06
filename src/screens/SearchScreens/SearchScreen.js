@@ -50,11 +50,7 @@ export default class SearchScreen extends React.Component {
 
           <SearchBar
             lightTheme
-            style={{ position: 'absolute', fontFamily: 'Helvetica-Nue' }}
             returnKeyType='search'
-            cancelIcon={true}
-            placeholderTextColor="#3c3c3c"
-            round={true}
             placeholder='Pesquise pelo nome de usuário'
             onChangeText={(text) => this.setState({ searchText: text })}
             backButton={<Ionicons name='md-arrow-back' size={34} color='black'></Ionicons>}

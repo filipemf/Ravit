@@ -7,8 +7,6 @@ const firebase = require("firebase")
 
 const numColumns = 2
 
-import ProgressBar from 'react-native-progress/Bar';
-
 import Fire from '../../../Fire'
 import MyAccount from './MyAccount'
 import LevelUpScreen from '../../components/LevelUpScreen'
@@ -30,7 +28,6 @@ export default function ProfileScreen(props, { navigation }) {
 
     const [isFetching, setIsFetching] = useState(false);
 
-
     useEffect(() => {
         initialLoad()
     }, []);
@@ -49,6 +46,7 @@ export default function ProfileScreen(props, { navigation }) {
         //Get all necessary data
         await getAllUserPosts()
         
+
         await getFollowersQuantity()
         await getFollowingQuantity()
 
@@ -56,20 +54,21 @@ export default function ProfileScreen(props, { navigation }) {
 
     }
 
-
     const getAllUserPosts = async () => {
-        const user = props.uid || Fire.shared.uid
+        const user2 = props.uid || Fire.shared.uid
         const allPosts = [];
 
+
         await setPosts([])
-        await Fire.shared.firestore.collection('posts').where('uid', '==', user).get().then(async data => {
+        await Fire.shared.firestore.collection('posts').where('uid', '==', user2).get().then(async data => {
             data.forEach(async doc => {
                 if (doc && doc.exists) {
                     let values = {}
                     const postData = doc.data()
 
                     values.avatar = user.avatar
-                    values.username = postData.username
+
+                    values.username = user.username
                     values.image = postData.image,
                         
                     values.titleText = postData.titleText,
@@ -83,8 +82,8 @@ export default function ProfileScreen(props, { navigation }) {
                     values.tags = postData.tags
 
                     allPosts.push(values)
+                   // console.log(allPosts)
                     const totalProps = await Object.keys(allPosts).length
-                    console.log(totalProps)
                     await setPostsQuantity(totalProps)
 
                 } else {
@@ -146,10 +145,8 @@ export default function ProfileScreen(props, { navigation }) {
         setMyAccountVisible(!myAccountVisible)
     }
 
-
     const renderPost = ({ item, index }) => {
         let { itemStyle } = styles
-
         return (
             <View style={itemStyle}>
                 <TouchableOpacity onPress={() => props.navigation.navigate("RecipesPosts", item)}><Image source={{ uri: item.image }} style={styles.postImage} /></TouchableOpacity>
@@ -198,17 +195,16 @@ export default function ProfileScreen(props, { navigation }) {
                         </View>
                     </View>
 
-                    <View style={{ flexDirection: 'row',left: 10, marginBottom: 30}}>
+                    <View style={{ flexDirection: 'row',left: 10, marginBottom: 20}}>
 
                         <TouchableOpacity onPress={() => toggleAddTodoModal()} onRequestClose={() => toggleAddTodoModal()} style={{ left: 140, marginTop: 20, marginBottom: 50 }}>
                             <Text style={[styles.name], { position: 'relative', fontFamily: 'Helvetica-Nue-Condensed', fontWeight: '900', fontSize: 22, color: '#000' }}>{user.name}</Text>
                         </TouchableOpacity>
 
 
-                        <View style={{ flexDirection: 'row', top: 60, right: 80, marginTop: 30, flex:1}}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#00ccff', fontWeight: 'bold' }}>{user.level}</Text> </Text>
-                            <Text>{user.experience}/100</Text>
-                        
+                        <View style={{ flexDirection: 'row', top: 60, right:130, marginTop: 10, flex:1}}>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#a84563', fontWeight: 'bold' }}>{user.level}  </Text> </Text>
+                            <Text style={{backgroundColor: '#dbdbdb', alignSelf: 'flex-start', fontWeight: 'bold', fontSize: 18, color: '#000' }}>        {user.experience}/100        </Text>                        
                         </View>
 
                     </View>
@@ -235,7 +231,7 @@ export default function ProfileScreen(props, { navigation }) {
         return (
             <View style={[styles.loading, { flexDirection: 'row' }]}>
                 <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
-                <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/animation-load.json")} animationStyle={{ width: 60, height: 60 }} speed={1} />
+                <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
             </View>
         )
     }

@@ -148,10 +148,11 @@ export default function PostScreen(props, { navigation }) {
                 experience: finalXp,
                 level: userLevel + 1
               }, { merge: true })
-
+              await setLoading(false)
               this.toggleLevelUpModal()
 
             }
+            await setLoading(false)
           }
         })
 
@@ -163,7 +164,7 @@ export default function PostScreen(props, { navigation }) {
       });
 
 
-    await setLoading(true)
+    await setLoading(false)
   };
 
   const togglePostType = async () => {
@@ -333,12 +334,10 @@ export default function PostScreen(props, { navigation }) {
           
           {tags != [] ? tags.map(({ item }) => {
             return (
-              <View style={{ flexDirection: 'column', margin: 3 }}>
-                <Text style={{
-                  alignSelf: 'center',
-                  bottom: 30,
-                  color: "#FFF", backgroundColor: item.color
-                }}><Text style={{ color: "#FFF", fontFamily: 'Helvetica-Nue-Bold' }}>{item.name}</Text></Text>
+              <View style={{ flexDirection: 'column', margin: 0.5}}>
+                <Text style={{alignSelf: 'center', bottom: 30, color: "#FFF", backgroundColor: item.color}}>
+                  <Text style={{ color: "#FFF", fontFamily: 'Helvetica-Nue-Bold' }}>{item.name}</Text>
+                </Text>
   
               </View>
             )

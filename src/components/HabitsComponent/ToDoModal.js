@@ -129,13 +129,13 @@ export default class ToDoModal extends React.Component {
         return (
             <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
                 <SafeAreaView style={styles.container}>
-                    <TouchableOpacity style={{ position: 'absolute', top: 64, right: 32, zIndex: 10, top: 25 }} onPress={this.props.closeModal}>
-                        <AntDesign name="close" size={24} color={Colors.black} />
+                    <TouchableOpacity style={{ position: 'absolute', top: 64, right: 12, zIndex: 10, top: 25 }} onPress={this.props.closeModal}>
+                        <AntDesign name="close" size={26} color={Colors.black} />
                     </TouchableOpacity>
 
                     <View style={[styles.section, styles.header, { backgroundColor: list.color, borderBottomColor: '#000' }]}>
                         <View>
-                            <View style={{ left: 20, marginRight: 30, position: 'absolute' }}>
+                            <View style={{ left: 20, marginRight: 10, position: 'absolute' }}>
                                 <Ionicons name={list.ioniconIcon} size={58} color="#fff" />
                             </View>
 
@@ -189,13 +189,13 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: Colors.white,
-        marginLeft: 114,
+        marginLeft: 84,
         fontFamily: 'Helvetica-Nue'
     },
     taskCount: {
         marginTop: 4,
         marginBottom: 16,
-        color: "#3c3c3c",
+        color: "#f5f5f5",
         fontWeight: '600',
         marginLeft: 114,
         fontFamily: 'Helvetica-Nue',

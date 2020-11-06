@@ -30,7 +30,7 @@ export default class PeopleScreen extends React.Component{
 }
 
   async componentDidMount(){
-    //await this.setState({isLoading: true})
+    await this.setState({isLoading: true})
     
     await this.getFollowersQuantity()
     await this.getFollowingQuantity()
@@ -46,7 +46,7 @@ export default class PeopleScreen extends React.Component{
 getUsersPosts = async () =>{
   const allPosts = [];
 
-  await Fire.shared.firestore.collection('posts').where('uid', '==', this.state.userUid).onSnapshot(async data=>{
+  await Fire.shared.firestore.collection('posts').where('uid', '==', this.state.userUid).get().then(async data=>{
       data.forEach(async doc => {
           if(doc&&doc.exists){
               let values = {}
@@ -149,18 +149,18 @@ render(){
           <View style={{marginTop: 25, alignItems: 'center'}}>
 
             <View style={{flexDirection: 'row'}}>
-              <View style={[styles.avatarContainer], {right: 170, position:'absolute'}}>
+              <View style={[styles.avatarContainer], {margin: 15}}>
                   <TouchableOpacity>
                       <Image source={this.state.avatar ? {uri: this.state.avatar}: require("../../../assets/tempAvatar.jpg")} style={styles.avatar}/>
                   </TouchableOpacity>
               </View>
 
               <View style={{flexDirection: 'column'}}>
-                <View style={{flexDirection: 'row', width: ( (Dimensions.get('window').width*55)/100), left: 70}}>
+                <View style={{flexDirection: 'row', width: ( (Dimensions.get('window').width*55)/100), left: 30}}>
                   <Text style={styles.name}>{this.state.name}</Text>
                 </View>
 
-                <View style={{alignSelf:'center', alignContent:'center', alignItems:'center', marginTop:45, flexDirection:'row'}}>
+                <View style={{flex:1,alignContent:'center', alignItems:'center', marginTop:45, flexDirection:'row', right:10, top:10}}>
                   <TouchableOpacity style={{bottom: -15,  flexDirection:'column', backgroundColor:'#116673', padding:10, borderRadius: 5}} onPress={this.handleRemoveOrFollow}>
                     
                     {this.state.isFollowing?
@@ -181,22 +181,15 @@ render(){
               </View>
               
 
-                
-
-         
-
-
             </View>
-             
-             
             
               <View style={styles.statsContainer}>
 
                     <Text style={styles.statAmount}>Posts: <Text style={{color: "black", fontSize: 20}}>{this.state.postsQuantity}</Text></Text>
 
-                    <Text style={styles.statAmount}>Followers: <Text style={{color: "black", fontSize: 20}}>{this.state.followers}</Text></Text>
+                    <Text style={styles.statAmount}>Seguidores: <Text style={{color: "black", fontSize: 20}}>{this.state.followers}</Text></Text>
 
-                    <Text style={styles.statAmount}>Following: <Text style={{color: "black", fontSize: 20}}>{this.state.following}</Text></Text>
+                    <Text style={styles.statAmount}>Seguindo: <Text style={{color: "black", fontSize: 20}}>{this.state.following}</Text></Text>
                   
               </View>
           </View>
@@ -254,9 +247,10 @@ name: {
   fontWeight: "bold"
 },
 statsContainer: {
+  top:10,
   flexDirection: "row",
   justifyContent: "space-between",
-  margin: 32
+  margin: 42
 },
 stat: {
   alignContent: 'center',

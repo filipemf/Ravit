@@ -2,7 +2,7 @@ import React from 'react'
 import { SafeAreaView, StatusBar, View, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput, Text, Dimensions} from 'react-native'
 import Fire from '../../../Fire'
 import { AntDesign, MaterialIcons} from '@expo/vector-icons'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 import styled from 'styled-components'
 
@@ -40,8 +40,8 @@ export default class RecipesPosts extends React.Component {
     this.textInput = React.createRef()
   }
 
-
   async componentDidMount() {
+    console.log(this.state.avatar)
     await this.setState({ isLoading: true }, async () => {
       await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
       await this.setState({ isLoading: false })
@@ -121,11 +121,14 @@ export default class RecipesPosts extends React.Component {
   }
 
   renderCommentaries = (comments) => {
+    moment.locale('pt'); 
+    moment().format("ll");
+
     try {
       if (comments != undefined || null) {
         return (
           <View style={styles.feedItem}>
-            {comments.whoCommented == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removeCommentary(comments.commentary, comments.postId, comments.timestamp, comments.usernameCommented, comments.whoCommented)} style={{ position: 'absolute', left: 300, top: 5 }}><AntDesign name="delete" size={24} /></TouchableOpacity> : <></>}
+            {comments.whoCommented == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removeCommentary(comments.commentary, comments.postId, comments.timestamp, comments.usernameCommented, comments.whoCommented)} style={{ position: 'absolute', top: 10, left:'90%'}}><AntDesign name="delete" size={24} /></TouchableOpacity> : <></>}
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Image source={comments.avatar ? { uri: comments.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.personalAvatar} />
@@ -148,7 +151,7 @@ export default class RecipesPosts extends React.Component {
       return (
         <View style={styles.loading}>
           <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
-          <AnimatedLoader visible={this.state.isLoading} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/animation-postRecipe.json")} animationStyle={{ width: 100, height: 100 }} speed={1} />
+          <AnimatedLoader visible={this.state.isLoading} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
         </View>
       )
     }
@@ -161,9 +164,12 @@ export default class RecipesPosts extends React.Component {
               <AntDesign name="arrowleft" size={28} color="#000" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={{ left: '310%', top: 15, backgroundColor: "#fc034e", borderRadius: 4, padding: 10, height: 40, width: 85 }}>
-              <Text style={{ fontWeight: 'bold' }} onPress={this.sendCommentary}>Comentar</Text>
-            </TouchableOpacity>
+            <View style={{marginLeft:'auto', marginRight:10}}>
+              <TouchableOpacity style={{ alignSelf:'center', marginLeft:100,top: 15, backgroundColor: "#fc034e", borderRadius: 4, padding: 10, height: 40, width: 85 }}>
+                <Text style={{ fontWeight: 'bold', color:'#fff'}} onPress={this.sendCommentary}>Comentar</Text>
+              </TouchableOpacity>
+            </View>
+
           </Back>
 
 
@@ -198,7 +204,7 @@ export default class RecipesPosts extends React.Component {
                     {this.state.uid == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removePost(this.state.image, this.state.text, this.state.timestamp, this.state.titleText, this.state.uid, this.state.username)} style={{ right: '10%', top:10,maxWidth: Dimensions.get('screen').width/3}}><MaterialIcons name="delete-forever" size={32} /></TouchableOpacity> : <></>}
                 
                     <Image source={this.state.avatar ? { uri: this.state.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
-                    <Text style={{fontFamily: 'Lato-Regular', fontSize: 17, left: 95, fontWeight:'bold',maxWidth: Dimensions.get('screen').width/5}}>{moment(this.state.timestamp).fromNow()}</Text>
+                    <Text style={{fontFamily: 'Lato-Regular', fontSize: 17, left: 95, top:15, fontWeight:'bold',maxWidth: Dimensions.get('screen').width/4}}>{moment(this.state.timestamp).fromNow()}</Text>
                   </View>
 
                 </View>
@@ -250,7 +256,7 @@ export default class RecipesPosts extends React.Component {
                   autoFocus={false}
                   multiline={true}
                   numberOfLines={2}
-                  style={{ fontSize: 20, maxWidth: 235, color: '#000', fontFamily: 'Helvetica-Nue', borderBottomWidth: 1.2, position: 'relative' }}
+                  style={{ fontSize: 20, maxWidth: 435, color: '#000', fontFamily: 'Helvetica-Nue', borderBottomWidth: 1.2, position: 'relative' }}
                   placeholder='Quer compartilhar algo?'
                   onChangeText={commentary => this.setState({ commentary })}
                   value={this.state.commentary}
@@ -332,7 +338,7 @@ const Back = styled.View`
   flex-direction: row;
   align-items: center;
   top:0px;
-  width:120%;
+  width:100%;
   height:75px;
   background-color: 'rgba(255,255,255,1.0)';
   border-width: 0.5;

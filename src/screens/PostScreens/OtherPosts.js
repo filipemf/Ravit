@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput } from 'react-native'
 import Fire from '../../../Fire'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 export default class OtherPosts extends React.Component {
   backgroundColor = ["#5CD859", "#24A6D9", "#595BD9", "#8022D9", "#D159D8", "#D85963", "#D88559"]
@@ -96,6 +96,9 @@ export default class OtherPosts extends React.Component {
   }
 
   renderOutrosPost = (comments) => {
+    moment.locale('pt'); 
+    moment().format("ll");
+    
     try {
       if (comments != undefined || null) {
         return (

@@ -39,15 +39,6 @@ export default function HabitsScreen(props, { navigation }) {
         )
     }
 
-    // const addList = async list => {
-    //     await Fire.shared.addList({
-    //         name: list.name,
-    //         timestamp: Fire.shared.timestamp,
-    //         color: list.color,
-    //         todos: []
-    //     })
-    // }
-
     const updateList = async list => {
         await Fire.shared.updateList(list)
     }
@@ -59,18 +50,6 @@ export default function HabitsScreen(props, { navigation }) {
             <Modal animationType="slide" visible={addTodoVisible}>
                 <AddListModal closeModal={() => toggleAddTodoModal()} addList={() => addList()}  />
             </Modal>
-            <Button
-                        title="OODFODKFO"
-                        onPress={()=>
-                            showMessage({
-                                message: "Parabéns!🥳",
-                                description: "Você acaba de adquirir 5 pontos de experiencia. Continue assim! 😄",
-                                type: "default",
-                                backgroundColor: "#2be381", // background color
-                                color: "#fff", // text color
-                            })
-                        }
-                    />
 
             <View style={{ marginVertical: 28 }}>
                 <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontWeight: 'bold', alignSelf: 'center', fontSize: 28, marginBottom: 15 }}>Metas e Desafios</Text>

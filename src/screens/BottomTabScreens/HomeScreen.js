@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, StatusBar } from 'react-native'
 import { Ionicons, AntDesign } from '@expo/vector-icons'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import Fire from '../../../Fire'
 
 import AnimatedLoader from 'react-native-animated-loader';
 
 const firebase = require('firebase')
+
 
 export default function HomeScreen(props, { navigation }) {
   const [posts, setPosts] = useState([]);
@@ -69,22 +70,23 @@ export default function HomeScreen(props, { navigation }) {
 
   const handleOpenImage = (post) => {
     if (post.typeOfPost == "OUTROS") {
-      navigation.navigate("OtherPosts", post)
+      props.navigation.navigate("OtherPosts", post)
     } else {
-      navigation.navigate("RecipesPosts", post)
+      props.navigation.navigate("RecipesPosts", post)
     }
   }
 
   const renderPost = post => {
-
-    
-
     let theLevel = 1;
     Fire.shared.firestore.collection('users').where('username', '==', post.username).get().then(async doc=>{
       let levelzinho = await doc.data().level
       console.log(levelzinho)
       theLevel = levelzinho
     })
+    moment.locale('pt'); 
+    moment().format("ll");
+
+    var preciseDate = moment(post.timestamp).fromNow();
 
     const tags = post.tags
 
@@ -116,18 +118,17 @@ export default function HomeScreen(props, { navigation }) {
                 >
                   <View>
                     <Text style={styles.name}>{post.username} 
-                      <Text style={{fontSize:20}}> Level: {theLevel}</Text>
                     </Text> 
                     <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>OUTROS</Text>}</Text>
                     <Text style={styles.timestamp}>
-                      {moment(post.timestamp).fromNow()}
+                      {preciseDate}
                     </Text>
                   </View>
 
                   <Ionicons name="ios-more" size={24} style={{ right: 10, top:20}} color="#73788B" />
 
                 </View>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16 }}>{post.titleText}</Text>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16, alignSelf:'center', right:45}}>{post.titleText}</Text>
                 {post.text!=""?
                   <Text numberOfLines={4} style={styles.post}>{post.text}</Text>:<></>}
                 <Image
@@ -190,15 +191,6 @@ export default function HomeScreen(props, { navigation }) {
     }
   }
 
-  // const renderFilters = (item) => {
-  //   return (
-  //     <TouchableOpacity style={{ padding: 10, backgroundColor: stateTags.includes(item.name) ? "#595757" : item.color, margin: 5, borderRadius: 4 }} onPress={() => handleFilters(item)}>
-  //       <Text style={{ color: '#fff', fontFamily: 'Metropolis-Regular' }}>{item.name}</Text>
-  //     </TouchableOpacity>
-  //   )
-  // }
-
-
   const renderFilters = (item) => {
     return (
       <TouchableOpacity style={{ padding: 10, backgroundColor:  stateTags.includes(item.name) ? "#666666":"#000", margin: 5, borderRadius: 4}} onPress={() => handleFilters(item)}>
@@ -232,7 +224,7 @@ export default function HomeScreen(props, { navigation }) {
 
 
           
-          <TouchableOpacity onPress={() => navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
             <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>Procurar...</Text>
             <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
           </TouchableOpacity>
@@ -256,7 +248,7 @@ export default function HomeScreen(props, { navigation }) {
     return (
       <View style={[styles.loading, { flexDirection: 'row' }]}>
         <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
-        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/animation-load.json")} animationStyle={{ width: 60, height: 60 }} speed={1} />
+        <AnimatedLoader visible={true} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
       </View>
     )
   }
@@ -284,6 +276,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   },
   feedItem: {
+    flex:1,
     backgroundColor: "#FFF",
     borderRadius: 5,
     padding: 8,
@@ -313,11 +306,12 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   postImage: {
-    right: 75,
+    right: 45,
     width: 295,
     height: 150,
     borderRadius: 5,
-    marginVertical: 5
+    marginVertical: 5,
+    alignSelf:'center'
   },
   loading: {
     position: 'absolute',

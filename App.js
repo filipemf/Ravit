@@ -1,6 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {Ionicons, AntDesign} from '@expo/vector-icons';
+
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
+
+import {Ionicons, AntDesign, FontAwesome} from '@expo/vector-icons';
 
 //Navigation
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -40,6 +44,18 @@ import TodosModal from './src/components/HabitsComponent/ToDoModal'
 if (!global.btoa) {  global.btoa = encode }
 
 if (!global.atob) { global.atob = decode }
+
+YellowBox.ignoreWarnings(['Setting a timer', 'Unhandled promise rejection']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+  if (message.indexOf('Unhandled promise rejection') <= -1) {
+    _console.warn(message);
+  }
+};
+
 
 Font.loadAsync({
   'Helvetica-Nue-Condensed': require('./assets/fonts/helvetica-neue-67-medium-condensed.otf'),
@@ -105,7 +121,7 @@ const AppContainer = createStackNavigator(
           screen: NotificationScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
-              <Ionicons name="ios-notifications" size={28} color={tintColor} />
+              <FontAwesome name="newspaper-o" size={28} color={tintColor} />
             )
           }
         },

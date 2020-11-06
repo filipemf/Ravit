@@ -6,7 +6,7 @@ import Fire from '../../../Fire'
 
 import { Ionicons } from '@expo/vector-icons'
 
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 
 export default class ToDoList extends React.Component {
@@ -51,7 +51,10 @@ export default class ToDoList extends React.Component {
         let completedCount = list.todos.filter(todo => todo.completed).length
         let remainingCount = list.todos.length - completedCount
 
-        let date = moment(list.timestamp).locale('pt').fromNow()
+        moment.locale('pt'); 
+        moment().format("ll");
+
+        let date = moment(list.timestamp).fromNow()
 
         return (
             <View>
@@ -64,7 +67,7 @@ export default class ToDoList extends React.Component {
 
                     <TouchableOpacity style={[styles.listContainer, { backgroundColor: list.color }]} onPress={() => this.toggleListModal()} onLongPress={() => this.AsyncDeleteAlert()}>
                         <View style={{}}>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-cafe"?-20:-3, flexWrap:'wrap'}}>
+                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-calendar"||list.ioniconIcon=="ios-build"||list.ioniconIcon=="ios-alert"||list.ioniconIcon=="ios-cafe"?-20:-3, flexWrap:'wrap'}}>
                                 <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc"/>
                             </View>
 
@@ -86,7 +89,7 @@ export default class ToDoList extends React.Component {
                             </View>
 
                             <View style={{ alignItems: 'center', marginLeft: 20, top: 145, position: 'absolute', flexWrap:'wrap'}}>
-                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#cccccc', fontWeight:'bold'}}>adicionada há {date}</Text>
+                                <Text style={{ fontSize: 14, fontFamily: 'Helvetica-Nue', color: '#f5f5f5', fontWeight:'bold'}}>adicionada {date}</Text>
                             </View>
                         </View>
                     </TouchableOpacity>
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
         height: 180
     },
     listTitle: {
-        fontSize: 30,
+        fontSize: 26,
         fontWeight: '700',
         color: Colors.white,
         marginBottom: 18,

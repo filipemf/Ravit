@@ -66,7 +66,7 @@ export default class LoginScreen extends React.Component {
 
                 }
                 else {
-                    console.log('User already signed-in Firebase')
+                    console.log('Uma conta já foi registrada com esse email.')
                 }
             }.bind(this))
     }
@@ -158,7 +158,21 @@ export default class LoginScreen extends React.Component {
         await this.setState({ loading: true }, async () => {
             firebase.
                 auth().
-                signInWithEmailAndPassword(email, password).catch(error => this.setState({ errorMessage: error.message })).then(() => this.setState({ loading: false }))
+                signInWithEmailAndPassword(email, password).catch(error =>{
+                    console.log(error.message)
+                    if(error.message=="The email address is badly formatted."){
+                        this.setState({ errorMessage: "A formatação do email está incorreta." })
+                    }
+                    if(error.message=="There is no user record corresponding to this identifier. The user may have been deleted."){
+                        this.setState({ errorMessage: "Não há registro de nenhum usuário com este email." })
+                    }
+                    if(error.message=="The password is invalid or the user does not have a password."){
+                        this.setState({ errorMessage: "A senha é invalida ou esté usuário não existe." })
+                    }
+
+                    this.setState({ loading: false })
+                })
+                    
 
         })
     }
