@@ -25,12 +25,13 @@ export default class SearchScreen extends React.Component {
       .onSnapshot(querySnapshot => {
         const users = []
         querySnapshot.forEach(documentSnapshot => {
-          const { avatar, username, name, uid } = documentSnapshot.data()
+          const { avatar, username, name, uid, level} = documentSnapshot.data()
           users.push({
             username: username,
             avatar: avatar,
             name: name,
-            uid: uid
+            uid: uid,
+            level: level
           })
           this.setState({ loading: false }, () => {
             this.setState({ data: users })

@@ -1,25 +1,32 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput } from 'react-native'
+import { SafeAreaView, StatusBar, View, StyleSheet, Image, FlatList, ScrollView, TouchableOpacity, TextInput, Text, Dimensions} from 'react-native'
 import Fire from '../../../Fire'
-import { Ionicons, AntDesign } from '@expo/vector-icons'
+import { AntDesign, MaterialIcons} from '@expo/vector-icons'
 import moment from 'moment/min/moment-with-locales'
 
-export default class OtherPosts extends React.Component {
-  backgroundColor = ["#5CD859", "#24A6D9", "#595BD9", "#8022D9", "#D159D8", "#D85963", "#D88559"]
+import styled from 'styled-components'
+
+import Colors from '../../utils/Colors'
+
+import AnimatedLoader from 'react-native-animated-loader';
+
+export default class RecipesPosts extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       avatar: this.props.navigation.getParam('avatar'),
       username: this.props.navigation.getParam('username'),
       timestamp: this.props.navigation.getParam('timestamp'),
-
       text: this.props.navigation.getParam('text'),
+
       ingredients: this.props.navigation.getParam('ingredients'),
       prepareMode: this.props.navigation.getParam('prepareMode'),
+      tags: this.props.navigation.getParam('tags'),
 
       image: this.props.navigation.getParam('image'),
       titleText: this.props.navigation.getParam('titleText'),
       typeOfPost: this.props.navigation.getParam('typeOfPost'),
+
       avatarImage: "",
       uid: this.props.navigation.getParam('uid'),
       commentary: "",
@@ -27,28 +34,29 @@ export default class OtherPosts extends React.Component {
       isFetching: false,
       commentedIdAndUserAreTheSame: false,
       userCommentaries: [],
-      color: this.backgroundColor[0]
+      isLoading: false,
+      fontsLoaded: false
     }
+    this.textInput = React.createRef()
   }
 
   async componentDidMount() {
-    console.log(this.state.typeOfText)
-    await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
+    console.log(this.state.avatar)
+    await this.setState({ isLoading: true }, async () => {
+      await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
+      await this.setState({ isLoading: false })
+    })
 
   }
 
   getComments = async (uid, timestamp, image, text) => {
     const post = await Fire.shared.firestore.collection('posts').where('uid', '==', uid).where('timestamp', '==', timestamp).where('image', '==', image).where('text', '==', text).get()
     const data = post.docs[0].id;
-
-
     await Fire.shared.firestore.collection('commentaries').doc(data).onSnapshot(async comments => {
 
       const allComments = []
       const userComments = []
-
       const commentsData = comments.data().comments
-
       commentsData.map(async element => {
         const user = await Fire.shared.firestore.collection('users').doc(element.whoCommented).get()
         const avatar = user.data().avatar
@@ -57,143 +65,336 @@ export default class OtherPosts extends React.Component {
         if (element.whoCommented == Fire.shared.uid) {
           userComments.push(element)
         }
-        this.setState({ comments: allComments }, () => {
-          this.setState({ userCommentaries: userComments }, () => {
-          })
 
+        allComments.sort((a, b) => b.timestamp - a.timestamp);
+        userComments.sort((a, b) => b.timestamp - a.timestamp);
+        //console.log(allComments)
+        this.setState({ comments: allComments }, async () => {
+          await this.setState({ userCommentaries: userComments })
         })
 
       })
     })
+
+
   }
 
+  clearText = async () => {
+    await this.setState({ commentary: "" })
+    await this.setState({ commentary: "" })
+    await this.setState({ commentary: "" })
+  }
 
   sendCommentary = async () => {
-    if (this.state.commentary != "" && this.state.commentary != undefined) {
-      await Fire.shared.addComment(this.state.uid, this.state.timestamp, this.state.image, this.state.text, this.state.commentary)
-      this.setState({ commentary: "" })
-    }
+    const theComment = this.state.commentary
 
+    if (theComment != "") {
+      await this.setState({ isLoading: true }, async () => {
+        await Fire.shared.addComment(this.state.uid, this.state.timestamp, this.state.image, this.state.text, theComment)
+      })
+      await this.setState({ commentary: "" }, async () => {
+        await this.setState({ isLoading: false })
+      })
+    }
   }
 
   removePost = async (image, text, timestamp, titleText, uid, username) => {
-    const post = await Fire.shared.firestore.collection('posts').where('image', '==', image).where('text', '==', text).where('timestamp', '==', timestamp).where('titleText', '==', titleText).where('uid', '==', uid).where('username', '==', username).get()
-    const data = post.docs[0].id;
+    await this.setState({ isLoading: true }, async () => {
+      const post = await Fire.shared.firestore.collection('posts').where('image', '==', image).where('text', '==', text).where('timestamp', '==', timestamp).where('titleText', '==', titleText).where('uid', '==', uid).where('username', '==', username).get()
+      const data = post.docs[0].id;
 
-    //Remove
-    await Fire.shared.firestore.collection('posts').doc(data).delete().then(() => console.log('post deletado com sucesso'))
-    await Fire.shared.firestore.collection('commentaries').doc(data).delete().then(() => console.log("todos os comentarios foram deletados"))
-    this.props.navigation.navigate("Profile")
+      //Remove
+      await Fire.shared.firestore.collection('posts').doc(data).delete().then(() => console.log('post deletado com sucesso'))
+      await Fire.shared.firestore.collection('commentaries').doc(data).delete().then(() => console.log("todos os comentarios foram deletados"))
+      await this.setState({ isLoading: false }, () => {
+        this.props.navigation.goBack(null)
+      })
+    })
   }
 
   removeCommentary = async (commentary, postId, timestamp, usernameCommented, whoCommented) => {
-    try {
+    await this.setState({ isLoading: true }, async () => {
       await Fire.shared.removeCommentary(commentary, postId, timestamp, usernameCommented, whoCommented)
-    } catch (e) {
-      alert(e)
-    }
+      await this.setState({ isLoading: false })
+    })
 
   }
 
-  renderOutrosPost = (comments) => {
+  renderCommentaries = (comments) => {
     moment.locale('pt'); 
     moment().format("ll");
-    
+
     try {
       if (comments != undefined || null) {
         return (
-
           <View style={styles.feedItem}>
-            {comments.whoCommented == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removeCommentary(comments.commentary, comments.postId, comments.timestamp, comments.usernameCommented, comments.whoCommented)} style={{ position: 'absolute', left: 300, top: 5 }}><AntDesign name="closecircleo" size={24} /></TouchableOpacity> : <></>}
+            {comments.whoCommented == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removeCommentary(comments.commentary, comments.postId, comments.timestamp, comments.usernameCommented, comments.whoCommented)} style={{ position: 'absolute', top: 10, left:'90%'}}><AntDesign name="delete" size={24} /></TouchableOpacity> : <></>}
             <View>
               <View style={{ flexDirection: 'row' }}>
                 <Image source={comments.avatar ? { uri: comments.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.personalAvatar} />
                 <Text style={styles.name}>{comments.usernameCommented}</Text>
               </View>
-              <Text style={{ left: 88, bottom: 33, fontSize: 16, color: "#C4C6CE", }}>{moment(comments.timestamp).fromNow()}</Text>
+              <Text style={{ left: 88, bottom: 33, color: "#383838", fontWeight:'bold'}}>{moment(comments.timestamp).fromNow()}</Text>
               <Text style={styles.postCommentary}>{comments.commentary}</Text>
             </View>
           </View>
         );
-      } else {
-        return (
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-            <Text>Ooops... Ou você não está seguindo ninguém, ou nenhuma das pessoas que você está seguindo fez um post ainda. Tente o feed universal!</Text>
-          </View>
-        )
       }
     } catch (error) {
       alert(error)
     }
-
   };
 
 
   render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView >
+    if (this.state.isLoading == true) {
+      return (
+        <View style={styles.loading}>
+          <Text style={{ bottom: 90, fontSize: 26, color: '#000', fontFamily: 'Helvetica-Nue-Condensed' }}>Carregando...</Text>
+          <AnimatedLoader visible={this.state.isLoading} overlayColor="rgba(255,255,255,0.75)" source={require("../../../assets/Animations/cat-preloader.json")} animationStyle={{ width: 110, height: 110 }} speed={1} />
+        </View>
+      )
+    }
+    else {
+      return (
+        <View style={{flex:1}}>
+          <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+          <Back>
+            <TouchableOpacity style={{ left: 5, top: 15 }} onPress={() => this.props.navigation.goBack(null)}>
+              <AntDesign name="arrowleft" size={28} color="#000" />
+            </TouchableOpacity>
 
-          <View style={{ alignItems: "center", flexDirection: 'row' }}>
-            <Image source={this.state.avatar ? { uri: this.state.avatar } : require("../../../assets/tempAvatar.jpg")} style={[styles.avatar], { overflow: "hidden", borderWidth: 3, borderColor: "red" }} />
-            {this.state.uid == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removePost(this.state.image, this.state.text, this.state.timestamp, this.state.titleText, this.state.uid, this.state.username)} style={{ left: '110%', bottom: '10%' }}><AntDesign name="closecircleo" size={24} /></TouchableOpacity> : <></>}
-          </View>
-
-          <View style={{ alignItems: "center" }}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.name}>@{this.state.username}</Text>
-              <Text style={styles.timestamp}>{moment(this.state.timestamp).fromNow()}</Text>
+            <View style={{marginLeft:'auto', marginRight:10}}>
+              <TouchableOpacity style={{ alignSelf:'center', marginLeft:100,top: 15, backgroundColor: "#fc034e", borderRadius: 4, padding: 10, height: 40, width: 85 }}>
+                <Text style={{ fontWeight: 'bold', color:'#fff'}} onPress={this.sendCommentary}>Comentar</Text>
+              </TouchableOpacity>
             </View>
 
-            <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 16 }}>{this.state.titleText}</Text>
-            <Text style={styles.post}>{this.state.text}</Text>
+          </Back>
 
-          </View>
 
-          <Image source={{ uri: this.state.image }} style={styles.postImage} resizeMode="cover" />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Container>
+              <RecipeBackground source={{ uri: this.state.image }}>
+                <SafeAreaView>
 
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity><Ionicons style={{ marginLeft: 18 }} name="ios-chatboxes" size={34} color="#73788B" /></TouchableOpacity>
-          </View>
+                  <MainRecipe>
+                    <Text style={{
+                      fontWeight: 'bold',
+                      fontSize: 30,
+                      fontFamily: 'Metropolis-Regular',
+                      textShadowColor: 'rgba(0, 0, 0, 1.0)',
+                      textShadowOffset: { width: -1, height: 1 },
+                      textShadowRadius: 25,
+                      alignSelf: 'center',
+                      bottom: 30,
+                      color: "#FFF"
+                    }}><Text MetropolisRegular style={{ color: "#FFF" }}>{this.state.titleText}</Text></Text>
+                  </MainRecipe>
 
-          <View style={{ flexDirection: 'row' }}>
-            <TextInput
-              autoFocus={false}
-              multiline={true}
-              numberOfLines={2}
-              style={{ flex: 1, fontSize: 20, maxWidth: 235, left: '15%' }}
-              placeholder='Quer compartilhar algo?'
-              onChangeText={commentary => this.setState({ commentary })}
-              value={this.state.commentary}></TextInput>
+                </SafeAreaView>
 
-            <TouchableOpacity style={{ left: '70%', backgroundColor: "#DDDDDD", padding: 10, alignItems: "center", height: 35, width: 100, position: 'absolute' }}><Text style={{ fontWeight: 'bold' }} onPress={this.sendCommentary}>Comentar</Text></TouchableOpacity>
+              </RecipeBackground>
 
-          </View>
+              <RecipesContainer style={{maxWidth: Dimensions.get('screen').width, flex:1}}>
+                <View style={{ flexDirection: 'row', bottom: '10%' }}>
 
-          <FlatList
-            style={styles.feed}
-            data={this.state.comments}
-            renderItem={(comments) => (
-              this.renderOutrosPost(comments.item)
-            )}
-            keyExtractor={(i, k) => k.toString()}
-            showsVerticalScrollIndicator={false}
-          />
+                  <View style={{flexDirection:'row'}}>
+                                      
+                    {this.state.uid == Fire.shared.uid ? <TouchableOpacity onPress={() => this.removePost(this.state.image, this.state.text, this.state.timestamp, this.state.titleText, this.state.uid, this.state.username)} style={{ right: '10%', top:10,maxWidth: Dimensions.get('screen').width/3}}><MaterialIcons name="delete-forever" size={32} /></TouchableOpacity> : <></>}
+                
+                    <Image source={this.state.avatar ? { uri: this.state.avatar } : require("../../../assets/tempAvatar.jpg")} style={styles.avatar} />
+                    <Text style={{fontFamily: 'Lato-Regular', fontSize: 17, left: 95, top:15, fontWeight:'bold',maxWidth: Dimensions.get('screen').width/4}}>{moment(this.state.timestamp).fromNow()}</Text>
+                  </View>
 
-        </ScrollView>
-      </View>
-    )
+                </View>
+
+                <View style={{ flexDirection: 'row', bottom: 65, marginHorizontal: 45, right: 70 }}>
+                  <Text style={{fontFamily: 'Lato-Regular', fontSize: 26, fontWeight: 'bold'}}>@{this.state.username}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', flex:1}}>
+                  <AntDesign name="tags" size={24} color="black" />
+                  <Text style={{ fontWeight: "bold", color: "#000",fontFamily: 'Lato-Regular', fontSize: 17, fontWeight: 'bold'}}>  TAGS: </Text>
+                </View>
+
+
+                <View style={{ flexDirection: 'row', right: 35, flexWrap: 'wrap', maxWidth: Dimensions.get('screen').width/3}}>
+
+                  {
+                    this.state.tags.map(data => (
+                      <Text style={{ backgroundColor: data.item.color, left: 40 ,fontFamily: 'Lato-Regular', fontSize: 18}}> <Text style={{ color: "#FFF" }}>{data.item.name}</Text> </Text>
+                    ))
+                  }
+                </View>
+
+                <Text>{"\n"}</Text>
+
+
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 24, fontWeight: 'bold'}}>
+                  Informações
+                    </Text>
+                <Text style={{fontFamily: 'Lato-Regular', fontSize: 19}}>
+                  {this.state.text}
+                  {"\n"}
+                </Text>
+
+              </RecipesContainer>
+
+
+              <View style={{ alignSelf: 'center',  maxWidth: Dimensions.get('screen').width/1.3}}>
+                <TextInput
+                  ref={component => this.messageInput = component}
+                  maxLength={130}
+                  autoFocus={false}
+                  multiline={true}
+                  numberOfLines={2}
+                  style={{ fontSize: 20, maxWidth: 435, color: '#000', fontFamily: 'Helvetica-Nue', borderBottomWidth: 1.2, position: 'relative' }}
+                  placeholder='Quer compartilhar algo?'
+                  onChangeText={commentary => this.setState({ commentary })}
+                  value={this.state.commentary}
+                ></TextInput>
+              </View>
+
+              <FlatList
+                style={styles.feed}
+                data={this.state.comments}
+                renderItem={(comments) => this.renderCommentaries(comments.item)}
+                keyExtractor={(i, k) => k.toString()}
+                showsVerticalScrollIndicator={false} />
+
+            </Container>
+          </ScrollView>
+
+        </View>
+      )
+    }
+
   }
 }
 
+
+const RecipesContainer = styled.View`
+
+  padding: 32px;
+  background-color: #fff;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+`
+
+const MainRecipe = styled.View`
+  padding: 0 32px;
+  margin: 200px 0 32px 0;
+`
+
+// const Text = styled.Text`
+//   color: ${(props) => (props.dark ? "#000" : props.grey ? "#adaaaa" : "#FFF")};
+//   font-family: 'Metropolis-Regular';
+
+//   ${({ title, large, small }) => {
+//     switch (true) {
+//       case title:
+//         return `font-size: 32px`;
+//       case large:
+//         return `font-size: 20px`;
+//       case small:
+//         return `font-size: 13px`;
+//     }
+//   }}
+
+//   ${({ bold, heavy }) => {
+//     switch (true) {
+//       case bold:
+//         return `font-weight: bold`;
+//       case heavy:
+//         return `font-weight: 700`
+//     }
+//   }}
+
+// ${({ MetropolisRegular, LatoRegular, Helvetica, HelveticaCondensed }) => {
+//     switch (true) {
+//       case MetropolisRegular:
+//         return `font-family: 'Metropolis-Regular`;
+//       case LatoRegular:
+//         return `font-family: 'Lato-Regular`;
+//       case Helvetica:
+//         return `font-family: 'Helvetica-Nue-Condensed'`;
+//       case HelveticaCondensed:
+//         return `font-family: 'Helvetica-Nue`;
+//     }
+//   }}
+// `
+
+const Back = styled.View`
+  border-color: 'rgba(0,0,0,1.0)';
+  align-content:center;
+  flex-direction: row;
+  align-items: center;
+  top:0px;
+  width:100%;
+  height:75px;
+  background-color: 'rgba(255,255,255,1.0)';
+  border-width: 0.5;
+`
+
+const Container = styled.View`
+  flex: 1;
+  background-color: #FFF;
+  
+`;
+
+const RecipeBackground = styled.ImageBackground`
+  width: 100%;
+`;
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: Colors.black
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
+  avatarContainer: {
+    shadowColor: "#151734",
+    shadowRadius: 30,
+    shadowOpacity: 0.4
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 68,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+    left:70,
+    bottom: 50,
+    overflow: "hidden",
+    borderWidth: 2.0,
+    borderColor: "rgba(0, 0,0, 2)",
   },
   name: {
-    fontSize: 24,
+    //marginTop: 24,
+    fontSize: 20,
     fontWeight: "900",
-    left: 10
+    left: 10,
+    right: 15,
+    color: 'black'
+  },
+  username: {
+    //marginTop: 24,
+    fontSize: 22,
+    fontWeight: "900",
+    left: 10,
+    right: 15,
+    color: '#fff'
   },
   statsContainer: {
     flexDirection: "row",
@@ -204,15 +405,31 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     flex: 1
   },
+  statAmount: {
+    color: "#4F566D",
+    fontSize: 18,
+    fontWeight: '300',
+    marginLeft: 18
+  },
+  statTitle: {
+    color: '#C3C5CD',
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: 4
+  },
   postImage: {
     width: '100%',
     height: 350,
     borderRadius: 5,
     marginVertical: 16
   },
-  post: {
-    fontSize: 25,
-    marginVertical: 15,
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 32,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D8D9DB'
   },
   postCommentary: {
     fontSize: 25,
@@ -222,25 +439,31 @@ const styles = StyleSheet.create({
     right: 25,
     fontSize: 20,
     marginLeft: 60,
-    marginRight: 15
+    marginRight: 15,
+    color: "#000",
+    fontFamily: 'Helvetica-Nue'
+
   },
   timestamp: {
-    fontSize: 21,
-    color: "#C4C6CE",
-    marginLeft: 150,
-    right: 10
+    fontSize: 18,
+    color: "#383838",
+    marginLeft: 50,
+    right: 10,
+    top: 30
   },
   feed: {
     flex: 1,
     marginHorizontal: 16,
-    position: 'relative'
+    position: 'relative',
   },
   feedItem: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#ebebeb",
     borderRadius: 5,
     padding: 8,
     flexDirection: "row",
     marginVertical: 8,
+    borderColor: Colors.lightGrey,
+    borderWidth: 1.5
   },
   personalAvatar: {
     width: 66,

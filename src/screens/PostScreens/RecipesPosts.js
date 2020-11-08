@@ -41,7 +41,6 @@ export default class RecipesPosts extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(this.state.avatar)
     await this.setState({ isLoading: true }, async () => {
       await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
       await this.setState({ isLoading: false })
@@ -249,10 +248,10 @@ export default class RecipesPosts extends React.Component {
               </RecipesContainer>
 
 
-              <View style={{ alignSelf: 'center' }}>
+              <View style={{ alignSelf: 'center',  maxWidth: Dimensions.get('screen').width/1.3}}>
                 <TextInput
                   ref={component => this.messageInput = component}
-                  maxLength={140}
+                  maxLength={130}
                   autoFocus={false}
                   multiline={true}
                   numberOfLines={2}

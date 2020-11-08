@@ -7,6 +7,8 @@ const firebase = require("firebase")
 
 const numColumns = 2
 
+import { ProgressBar, Colors } from 'react-native-paper';
+
 import Fire from '../../../Fire'
 import MyAccount from './MyAccount'
 import LevelUpScreen from '../../components/LevelUpScreen'
@@ -203,11 +205,16 @@ export default function ProfileScreen(props, { navigation }) {
 
 
                         <View style={{ flexDirection: 'row', top: 60, right:130, marginTop: 10, flex:1}}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: <Text style={{ color: '#a84563', fontWeight: 'bold' }}>{user.level}  </Text> </Text>
-                            <Text style={{backgroundColor: '#dbdbdb', alignSelf: 'flex-start', fontWeight: 'bold', fontSize: 18, color: '#000' }}>        {user.experience}/100        </Text>                        
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: {user.level}  </Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>{user.experience}/100</Text>
+                            
                         </View>
 
                     </View>
+                    <View style={{bottom:5, width:300, left:30}}>
+                        <ProgressBar progress={user.experience/100} color={Colors.red800} />
+                    </View>
+                    
                 </View>
 
                 <FlatList

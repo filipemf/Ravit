@@ -16,6 +16,7 @@ export default class PeopleScreen extends React.Component{
       avatar: this.props.navigation.getParam('avatar'),
       name: this.props.navigation.getParam('name'),
       userUid: this.props.navigation.getParam('uid'),
+      level: this.props.navigation.getParam('level'),
       posts: [],
       isLoading: false,
       postsQuantity: 0,
@@ -25,9 +26,6 @@ export default class PeopleScreen extends React.Component{
       following:0
   };
   }
-  componentWillMount(){
-  console.log("aaaaaa")
-}
 
   async componentDidMount(){
     await this.setState({isLoading: true})
@@ -35,7 +33,7 @@ export default class PeopleScreen extends React.Component{
     await this.getFollowersQuantity()
     await this.getFollowingQuantity()
     await this.getUsersPosts()
-    await this.setState({isFollowing: await Fire.shared.VerifyIfIsAlredyFollowingUser(this.state.userUid)}, ()=> console.log(this.state.isFollowing))
+    await this.setState({isFollowing: await Fire.shared.VerifyIfIsAlredyFollowingUser(this.state.userUid)})
     
     await this.setState({isLoading: false})
    
@@ -146,9 +144,10 @@ render(){
           <TouchableOpacity style={{marginLeft: 12, top: 30}} onPress={() => this.props.navigation.goBack(null)}>
             <Ionicons name='md-arrow-back' size={34} color='black'></Ionicons>
           </TouchableOpacity>
+
           <View style={{marginTop: 25, alignItems: 'center'}}>
 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', left:10}}>
               <View style={[styles.avatarContainer], {margin: 15}}>
                   <TouchableOpacity>
                       <Image source={this.state.avatar ? {uri: this.state.avatar}: require("../../../assets/tempAvatar.jpg")} style={styles.avatar}/>
@@ -156,11 +155,15 @@ render(){
               </View>
 
               <View style={{flexDirection: 'column'}}>
-                <View style={{flexDirection: 'row', width: ( (Dimensions.get('window').width*55)/100), left: 30}}>
+                <View style={{flexDirection: 'column', width: ( (Dimensions.get('window').width*55)/120), left: 30}}>
                   <Text style={styles.name}>{this.state.name}</Text>
+                  <Text style={styles.name}>Level {this.state.level}</Text>
+                  
                 </View>
 
-                <View style={{flex:1,alignContent:'center', alignItems:'center', marginTop:45, flexDirection:'row', right:10, top:10}}>
+
+                <View style={{alignContent:'center', alignItems:'center', marginTop:25, flexDirection:'row', right:55, top:10}}>
+                  
                   <TouchableOpacity style={{bottom: -15,  flexDirection:'column', backgroundColor:'#116673', padding:10, borderRadius: 5}} onPress={this.handleRemoveOrFollow}>
                     
                     {this.state.isFollowing?
