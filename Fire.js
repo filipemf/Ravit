@@ -12,9 +12,7 @@ class Fire {
             //firebase.analytics();
         firebase.database.enableLogging(true);
 
-        console.log(firebase.auth().languageCode); // null
         firebase.auth().languageCode = 'pt';
-        console.log(firebase.auth().languageCode); // 'fr
 
     }
 

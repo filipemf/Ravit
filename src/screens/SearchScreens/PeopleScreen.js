@@ -157,7 +157,7 @@ render(){
               <View style={{flexDirection: 'column'}}>
                 <View style={{flexDirection: 'column', width: ( (Dimensions.get('window').width*55)/120), left: 30}}>
                   <Text style={styles.name}>{this.state.name}</Text>
-                  <Text style={styles.name}>Level {this.state.level}</Text>
+                  <Text style={{fontFamily:'Lato-Regular', marginTop: 24, fontSize: 22}}>Level {this.state.level}</Text>
                   
                 </View>
 

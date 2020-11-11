@@ -35,12 +35,8 @@ export default class LoginScreen extends React.Component {
         );
     });
 
-
-
-
     onSignIn = googleUser => {
         //console.log('Google Auth Response', googleUser)
-
         var unsubscribe = firebase
             .auth()
             .onAuthStateChanged(async function (firebaseUser) {
@@ -190,7 +186,7 @@ export default class LoginScreen extends React.Component {
                     <StatusBar backgroundColor="transparent" barStyle="dark-content" />
                    
 
-                    <Text style={{fontSize: 42, fontFamily:'Helvetica-Nue', color: "#000", alignSelf: 'center', marginTop: 15, marginBottom: -15}}>Havit</Text>
+                    <Text style={{fontSize: 42, fontFamily:'Helvetica-Nue', color: "#000", alignSelf: 'center', marginTop: 25, marginBottom: 45, top:30}}>Ravit</Text>
 
                     <View style={styles.errorMessage}>
                         {this.state.errorMessage && <Text style={styles.errorLog}>{this.state.errorMessage}</Text>}
@@ -214,7 +210,7 @@ export default class LoginScreen extends React.Component {
                         <View style={{ marginTop: 32 }}>
                             <Text style={styles.inputTitle}>Senha</Text>
 
-                            <TouchableOpacity style={{ left: '90%', top: 12, left: 270 }} onPress={this.onIconPress}>
+                            <TouchableOpacity style={{ left: '90%', top: -10, left: 340 }} onPress={this.onIconPress}>
                                 <MaterialCommunityIcons size={28} name="eye" />
                             </TouchableOpacity>
 

@@ -322,11 +322,15 @@ export default function PostScreen(props, { navigation }) {
   
   
   
-          <View style={{ marginHorizontal: 15, marginTop: 12, height: 300, bottom: 20, top: 30, backgroundColor: "rgba(222, 222, 222, 3.8)" }}>
+          <View style={{ marginHorizontal: 15, marginTop: 12, height: 300, bottom: 20, top: 30, backgroundColor: "rgba(222, 222, 222, 3.8)", borderWidth:2,
+    borderStyle: 'dotted',
+    borderColor:'black',
+    borderTopColor:'black',
+    borderRadius:3}}>
             {image != null ? <Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /> : <View></View>}
           </View>
   
-          <TouchableOpacity style={styles.photo, { botom: 400, top: -250, left: 165, marginBottom: 50 }} onPress={pickImage}>
+          <TouchableOpacity style={{ alignContent:'center', alignItems:'center', alignSelf:'center',flex:1,botom: 400, top: -200,marginBottom: 50 }} onPress={pickImage}>
             <Ionicons name='md-camera' size={32} color='#c2c2c2'></Ionicons>
           </TouchableOpacity>
   
@@ -418,5 +422,12 @@ const styles = StyleSheet.create({
     height: 88,
     borderRadius: 64,
     marginRight: 30
+  },
+  photo:{
+    borderWidth:1,
+    borderStyle: 'dashed',
+    borderColor:'red',
+    borderTopColor:'white',
+    borderRadius:1
   }
 });

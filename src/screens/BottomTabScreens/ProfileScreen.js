@@ -149,11 +149,21 @@ export default function ProfileScreen(props, { navigation }) {
 
     const renderPost = ({ item, index }) => {
         let { itemStyle } = styles
-        return (
-            <View style={itemStyle}>
-                <TouchableOpacity onPress={() => props.navigation.navigate("RecipesPosts", item)}><Image source={{ uri: item.image }} style={styles.postImage} /></TouchableOpacity>
-            </View>
-        )
+        if(item.typeOfPost=="OUTROS"){
+            return (
+                <View style={itemStyle}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("OtherPosts", item)}><Image source={{ uri: item.image }} style={styles.postImage} /></TouchableOpacity>
+                </View>
+            )
+        }
+        else{
+            return (
+                <View style={itemStyle}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("RecipesPosts", item)}><Image source={{ uri: item.image }} style={styles.postImage} /></TouchableOpacity>
+                </View>
+            )
+        }
+
     }
 
     if (isLoading == false) {
@@ -205,13 +215,16 @@ export default function ProfileScreen(props, { navigation }) {
 
 
                         <View style={{ flexDirection: 'row', top: 60, right:130, marginTop: 10, flex:1}}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>Nível: {user.level}  </Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 18, color: '#000' }}>{user.experience}/100</Text>
+                            <Text style={{ fontWeight:'900',right:30, fontSize: 20, color: '#000', fontFamily:'Helvetica-Nue'}}>Nível: {user.level}</Text>
+                            {
+                                //<Text style={{ bottom:1.5, right:30, fontWeight: 'bold', fontSize: 18, color: '#000', fontFamily:'Helvetica-Nue'}}>{user.level} </Text>
+                            }
+                            <Text style={{alignSelf:'center', fontSize: 18, color: '#000', fontFamily:'Helvetica-Nue-Bold', bottom:20, left:30}}>     {user.experience}/100</Text>
                             
                         </View>
 
                     </View>
-                    <View style={{bottom:5, width:300, left:30}}>
+                    <View style={{bottom:5, width:300, alignSelf:'center'}}>
                         <ProgressBar progress={user.experience/100} color={Colors.red800} />
                     </View>
                     

@@ -41,7 +41,6 @@ export default class RecipesPosts extends React.Component {
   }
 
   async componentDidMount() {
-    console.log(this.state.avatar)
     await this.setState({ isLoading: true }, async () => {
       await this.getComments(this.state.uid, this.state.timestamp, this.state.image, this.state.text)
       await this.setState({ isLoading: false })

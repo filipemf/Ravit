@@ -65,12 +65,12 @@ export default class LevelUpScreen extends React.Component{
                     <AntDesign name="close" size={34} color="#000"/>
                 </TouchableOpacity>
 
-                <View style={{justifyContent: 'center'}}>
-                    <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontSize: 48, marginHorizontal: 40}}>Parabéns! {"\n"}Você acaba de passar de nível!</Text>
+                <View style={{justifyContent: 'center', alignContent:'center', alignItems:'center', alignSelf:'center'}}>
+                    <Text style={{ fontFamily: 'Helvetica-Nue-Condensed', fontSize: 48, marginHorizontal: 40, alignSelf:'center', alignContent:'center'}}>Parabéns! {"\n"}Você acaba de passar de nível!</Text>
 
-                    <TouchableOpacity onPress={async () => { await this.toggleLop() }}>
+                    <TouchableOpacity style={{alignSelf:'center', alignItems:'center', alignContent:'center'}} onPress={async () => { await this.toggleLop() }}>
                         <LottieView
-                            style={{ width: 190, height: 190 }}
+                            style={{ width: 190, height: 190, alignContent:'center', alignSelf:'center', alignItems:'center'}}
                             ref={animation => {
                                 this.animation = animation;
                             }}

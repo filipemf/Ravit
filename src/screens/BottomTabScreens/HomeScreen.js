@@ -80,7 +80,6 @@ export default function HomeScreen(props, { navigation }) {
     let theLevel = 1;
     Fire.shared.firestore.collection('users').where('username', '==', post.username).get().then(async doc=>{
       let levelzinho = await doc.data().level
-      console.log(levelzinho)
       theLevel = levelzinho
     })
     moment.locale('pt'); 
@@ -225,7 +224,7 @@ export default function HomeScreen(props, { navigation }) {
 
           
           <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
-            <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>Procurar...</Text>
+            <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>        Procurar...    </Text>
             <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
           </TouchableOpacity>
 
