@@ -78,7 +78,7 @@ export default function PostScreen(props, { navigation }) {
   }
 
   const handlePost = async () => {
-    await setLoading(true)
+    
     if (typeOfPost == "RECIPE") {
       if (titleText == "") {
         return alert("Por favor, escreva um título.")
@@ -105,7 +105,7 @@ export default function PostScreen(props, { navigation }) {
         return alert("Por favor, adicione uma imagem.")
       }
     }
-
+    await setLoading(true)
     const user = props.uid || Fire.shared.uid
     let allData = await firebase.firestore()
       .collection("users")

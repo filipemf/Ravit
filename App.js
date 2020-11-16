@@ -27,7 +27,7 @@ import LoginScreen from './src/screens/AuthScreens/LoginScreen'
 //BottomTabScreens
 import HomeScreen from './src/screens/BottomTabScreens/HomeScreen'
 import AddPostScreen from './src/screens/BottomTabScreens/AddPostScreen'
-import NotificationScreen from './src/screens/BottomTabScreens/NotificationScreen'
+import NoticesScreen from './src/screens/BottomTabScreens/NoticesScreen'
 import HabitsScreen from './src/screens/BottomTabScreens/HabitsScreen'
 import ProfileScreen from './src/screens/BottomTabScreens/ProfileScreen'
 
@@ -117,8 +117,8 @@ const AppContainer = createStackNavigator(
             )
           }
         },
-        Notification: {
-          screen: NotificationScreen,
+        Notices: {
+          screen: NoticesScreen,
           navigationOptions: {
             tabBarIcon: ({ tintColor }) => (
               <FontAwesome name="newspaper-o" size={28} color={tintColor} />

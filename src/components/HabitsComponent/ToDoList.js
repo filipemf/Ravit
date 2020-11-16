@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 6,
         marginHorizontal: 12,
-        width: 330,
+        width: 390,
         height: 180
     },
     listTitle: {

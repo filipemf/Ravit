@@ -225,7 +225,7 @@ export default function ProfileScreen(props, { navigation }) {
 
                     </View>
                     <View style={{bottom:5, width:300, alignSelf:'center'}}>
-                        <ProgressBar progress={user.experience/100} color={Colors.red800} />
+                        <ProgressBar progress={user.experience/100} color={Colors.red800} style={{height:8}}/>
                     </View>
                     
                 </View>

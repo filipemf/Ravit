@@ -17,6 +17,7 @@ export default function HomeScreen(props, { navigation }) {
   const [stateTags, setStateTags] = useState([])
 
   let tagFilters = [
+    { key: 1, color: "#5CD859", name: "Tudo" },
     { key: 1, color: "#5CD859", name: "100açucar" },
     { key: 2, color: "#24A6D9", name: "100glutem" },
     { key: 3, color: "#595BD9", name: "100academia" },
@@ -182,18 +183,24 @@ export default function HomeScreen(props, { navigation }) {
   }
 
   const handleFilters = async item => {
-    if (stateTags.includes(item.name)) {
+    if(item.name=="Tudo"){
+      setStateTags([])
+    }
+    else{
+          if (stateTags.includes(item.name)) {
       unFilterPosts(item)
     }
     else {
       filterPosts(item)
     }
+    }
+
   }
 
   const renderFilters = (item) => {
     return (
-      <TouchableOpacity style={{ padding: 10, backgroundColor:  stateTags.includes(item.name) ? "#666666":"#000", margin: 5, borderRadius: 4}} onPress={() => handleFilters(item)}>
-        <Text style={{ color: '#fff', fontFamily: 'Metropolis-Regular' }}>{item.name}</Text>
+      <TouchableOpacity style={{ padding: 10, margin: 5, borderRadius: 4, backgroundColor: stateTags.includes(item.name) ? "#666666":"#000"}} onPress={() => handleFilters(item)}>
+        <Text style={{ color:'#fff',fontFamily: 'Metropolis-Regular', fontWeight:'bold', fontSize:16}}>{item.name}</Text>
       </TouchableOpacity>
     )
   }
@@ -207,6 +214,13 @@ export default function HomeScreen(props, { navigation }) {
         <View style={styles.header}>
 
           <View style={{flexDirection:'row'}}>
+            <Text style={{fontWeight:'bold', fontSize: 24, marginRight:10, left:'600%', marginBottom: 5}}>Feed</Text>
+            <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', borderRadius:1, left:'50%'}}>
+              <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={{flexDirection:'row'}}>
             <FlatList
               style={{ marginLeft: 10 }}
               data={tagFilters}
@@ -215,18 +229,12 @@ export default function HomeScreen(props, { navigation }) {
               renderItem={(item) => renderFilters(item.item)}
               showsHorizontalScrollIndicator={false}/>
 
-            <TouchableOpacity onPress={() => setStateTags([])} style={{}}>
-              <Ionicons name="ios-trash" size={28} color="#73788B" style={{ marginLeft: 30, marginTop: 10, right: 15 }} />
-            </TouchableOpacity>
+            {//<TouchableOpacity onPress={() => setStateTags([])} style={{}}>
+              //<Ionicons name="ios-trash" size={28} color="#73788B" style={{ marginLeft: 30, marginTop: 10, right: 15 }} />
+            //</TouchableOpacity>
+            }
 
           </View>
-
-
-          
-          <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', backgroundColor:'#e3e3e3', marginTop:10, borderRadius:1}}>
-            <Text style={{marginTop: 10, marginLeft:20, fontFamily: 'Lato-Regular'}}>        Procurar...    </Text>
-            <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
-          </TouchableOpacity>
 
         </View>
 
@@ -256,7 +264,7 @@ export default function HomeScreen(props, { navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ced0de",
+    backgroundColor: "#fff",
     width: '100%'
   },
   header: {
@@ -264,7 +272,6 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     paddingBottom: 16,
     backgroundColor: "#FFF",
-    borderBottomWidth: 0.2,
     shadowColor: "#454D65",
     shadowOffset: { height: 5 },
     shadowRadius: 15,
@@ -272,15 +279,14 @@ const styles = StyleSheet.create({
     zIndex: 10
   },
   feed: {
-    marginHorizontal: 16
+   marginHorizontal:5
   },
   feedItem: {
     flex:1,
     backgroundColor: "#FFF",
-    borderRadius: 5,
     padding: 8,
     flexDirection: "row",
-    marginVertical: 8
+    marginBottom:30,
   },
   avatar: {
     width: 66,

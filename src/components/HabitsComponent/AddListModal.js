@@ -55,14 +55,14 @@ export default class AddListModal extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
-                <TouchableOpacity style={{ left: 320 }} onPress={this.props.closeModal}>
+                <TouchableOpacity style={{ left: '50%' }} onPress={this.props.closeModal}>
                     <AntDesign name="close" size={24} color={Colors.black} />
                 </TouchableOpacity>
 
                 <View style={{ alignSelf: 'stretch', marginHorizontal: 32 }}>
 
                     <View style={{ marginVertical: 15 }}>
-                        <Text style={styles.title}>Lista de listas</Text>
+                        <Text style={styles.title}>Adicionar meta</Text>
                         <TextInput maxLength={18} style={styles.input} placeholder="Um nome para as suas novas metas" onChangeText={text => this.setState({ name: text })} />
 
                         <View style={{ flexDirection: "row", justifyContent: 'space-between', marginTop: 12 }}>
