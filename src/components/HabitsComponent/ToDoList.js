@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 import moment from 'moment/min/moment-with-locales'
 
+const { height, width } = Dimensions.get('window');
 
 export default class ToDoList extends React.Component {
     state = {
@@ -57,7 +58,7 @@ export default class ToDoList extends React.Component {
         let date = moment(list.timestamp).fromNow()
 
         return (
-            <View>
+            <View style={{flex:1}}>
                 <Modal animationType="slide" visible={this.state.showListVisible} onRequestClose={() => this.toggleListModal()} swipeDirection={'right'} propagateSwipe>
                     <ToDoModal list={list} closeModal={() => this.toggleListModal()} updateList={this.props.updateList} swipeDirection={'right'} propagate />
                 </Modal>
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 6,
         marginHorizontal: 12,
-        width: 390,
+        width: (width*80)/100,
         height: 180
     },
     listTitle: {

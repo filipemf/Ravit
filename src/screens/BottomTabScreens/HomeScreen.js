@@ -213,9 +213,9 @@ export default function HomeScreen(props, { navigation }) {
 
         <View style={styles.header}>
 
-          <View style={{flexDirection:'row'}}>
-            <Text style={{fontWeight:'bold', fontSize: 24, marginRight:10, left:'600%', marginBottom: 5}}>Feed</Text>
-            <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', borderRadius:1, left:'50%'}}>
+          <View style={{flexDirection:'row', justifyContent:'center'}}>
+            <Text style={{fontWeight:'bold', fontSize: 24, marginRight:10, marginBottom: 5, left:'50%'}}>Feed</Text>
+            <TouchableOpacity onPress={() => props.navigation.navigate("Search")} style={{alignSelf:'center', flexDirection: 'row', borderRadius:1, left:'20%'}}>
               <Ionicons name="md-search" size={24} color="#73788B" style={{ marginLeft: 40, marginTop: 8, right: 25, bottom:3}} />
             </TouchableOpacity>
           </View>
