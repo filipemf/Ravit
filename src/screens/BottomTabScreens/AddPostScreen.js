@@ -21,13 +21,14 @@ const numColumns = 4
 
 export default function PostScreen(props, { navigation }) {
   let allBackgroundColor = [
-    { key: 1, color: "#5CD859", name: "100açucar" },
-    { key: 2, color: "#24A6D9", name: "100glutem" },
-    { key: 3, color: "#595BD9", name: "100academia" },
-    { key: 4, color: "#8022D9", name: "100carboidratos" },
-    { key: 5, color: "#D159D8", name: "não-fritura" },
-    { key: 6, color: "#D85963", name: "com-carne" },
-    { key: 7, color: "#D88559", name: "rapido" }
+    { key: 1, color: "#5CD859", name: "sem açúcar" },
+    { key: 2, color: "#24A6D9", name: "rápido" },
+    { key: 3, color: "#595BD9", name: "esporte" },
+    { key: 4, color: "#8022D9", name: "sem-sal" },
+    { key: 5, color: "#D159D8", name: "de casa" },
+    { key: 6, color: "#D85963", name: "doce" },
+    { key: 7, color: "#D88559", name: "salgado" },
+    { key: 7, color: "#8022D9", name: "sem-açúcar" },
   ]
   const [text, setText] = useState("");
   const [image, setImage] = useState("");

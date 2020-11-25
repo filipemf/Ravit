@@ -18,13 +18,13 @@ export default function HomeScreen(props, { navigation }) {
 
   let tagFilters = [
     { key: 1, color: "#5CD859", name: "Tudo" },
-    { key: 1, color: "#5CD859", name: "100açucar" },
-    { key: 2, color: "#24A6D9", name: "100glutem" },
-    { key: 3, color: "#595BD9", name: "100academia" },
-    { key: 4, color: "#8022D9", name: "100carboidratos" },
-    { key: 5, color: "#D159D8", name: "não-fritura" },
-    { key: 6, color: "#D85963", name: "com-carne" },
-    { key: 7, color: "#D88559", name: "rapido" }
+    { key: 2, color: "#24A6D9", name: "rápido" },
+    { key: 3, color: "#595BD9", name: "esporte" },
+    { key: 4, color: "#8022D9", name: "sem-sal" },
+    { key: 7, color: "#8022D9", name: "sem-açúcar" },
+    { key: 5, color: "#D159D8", name: "de casa" },
+    { key: 6, color: "#D85963", name: "doce" },
+    { key: 7, color: "#D88559", name: "salgado" }
   ]
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function HomeScreen(props, { navigation }) {
                   <View>
                     <Text style={styles.name}>{post.username} 
                     </Text> 
-                    <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>OUTROS</Text>}</Text>
+                    <Text style={{ fontSize: 13, fontWeight: 'bold' }}>{post.typeOfPost == 'RECIPE' ? <Text>RECEITA</Text> : <Text>DIVERSOS</Text>}</Text>
                     <Text style={styles.timestamp}>
                       {preciseDate}
                     </Text>
@@ -308,7 +308,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 14,
     color: "#838899",
-    fontSize: 16
+    fontSize: 16,
+    right:40,
   },
   postImage: {
     right: 45,

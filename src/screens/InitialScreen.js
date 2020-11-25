@@ -200,7 +200,11 @@ const Pagination = ({ scrollX }) => {
         style={[
           styles.paginationIndicator,
           {
+            
             position: 'absolute',
+            alignContent:'center',
+            alignSelf:'center',
+            alignItems: 'center',
             transform: [{ translateX }],
           },
         ]}
@@ -346,6 +350,9 @@ const styles = StyleSheet.create({
     bottom: 50,
     flexDirection: 'row',
     height: DOT_SIZE,
+    alignContent:'center',
+    alignSelf:'center',
+    alignItems: 'center',
   },
   paginationDot: {
     width: DOT_SIZE * 0.3,

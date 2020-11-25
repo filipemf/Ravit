@@ -214,12 +214,12 @@ export default function ProfileScreen(props, { navigation }) {
                         </TouchableOpacity>
 
 
-                        <View style={{ flexDirection: 'row', top: 60, right:130, marginTop: 10, flex:1}}>
-                            <Text style={{ fontWeight:'900',right:30, fontSize: 20, color: '#000', fontFamily:'Helvetica-Nue'}}>Nível: {user.level}</Text>
+                        <View style={{ flexDirection: 'row', top: 60, right:130, marginTop: 10, flex:1, position:'absolute'}}>
+                            <Text style={{ fontWeight:'900',right:40, fontSize: 20, color: '#000', fontFamily:'Helvetica-Nue'}}>Nível: {user.level}</Text>
                             {
                                 //<Text style={{ bottom:1.5, right:30, fontWeight: 'bold', fontSize: 18, color: '#000', fontFamily:'Helvetica-Nue'}}>{user.level} </Text>
                             }
-                            <Text style={{alignSelf:'center', fontSize: 18, color: '#000', fontFamily:'Helvetica-Nue-Bold', bottom:20, left:30}}>     {user.experience}/100</Text>
+                            <Text style={{alignSelf:'center', fontSize: 18, color: '#000', fontFamily:'Helvetica-Nue-Bold', top:10, right:20}}>     {user.experience}/100</Text>
                             
                         </View>
 

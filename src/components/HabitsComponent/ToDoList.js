@@ -68,7 +68,7 @@ export default class ToDoList extends React.Component {
 
                     <TouchableOpacity style={[styles.listContainer, { backgroundColor: list.color }]} onPress={() => this.toggleListModal()} onLongPress={() => this.AsyncDeleteAlert()}>
                         <View style={{}}>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-calendar"||list.ioniconIcon=="ios-build"||list.ioniconIcon=="ios-alert"||list.ioniconIcon=="ios-cafe"?-20:-3, flexWrap:'wrap'}}>
+                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-calendar"||list.ioniconIcon=="ios-build"||list.ioniconIcon=="ios-alert"?-15:-50, flexWrap:'wrap'}}>
                                 <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc"/>
                             </View>
 
@@ -78,12 +78,12 @@ export default class ToDoList extends React.Component {
                                 </Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -18, flexWrap:'wrap'}}>
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 10, top: -18, flexWrap:'wrap'}}>
                                 <Text style={[styles.subtitle, { color: "#000", fontFamily: 'Helvetica-Nue-Condensed'}]}>Completada:{' '}</Text>
                                 <Text style={[styles.count, { color: "#000", fontWeight: 'bold'}]}>{completedCount}</Text>
                             </View>
 
-                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 20, top: -18, flexWrap:'wrap'}}>
+                            <View style={{ alignItems: 'center', flexDirection: 'row', marginLeft: 10, top: -18, flexWrap:'wrap'}}>
                                 <Text style={[styles.subtitle, { color: "#000", fontFamily: 'Helvetica-Nue-Condensed'}]}>Faltando:{' '}</Text>
                                 <Text style={[styles.count, { color: "#000", fontWeight: 'bold'}]}>{remainingCount}</Text>
 
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         fontFamily: 'Helvetica-Nue-Condensed',
-        fontSize: 24,
+        fontSize: 22,
         color: Colors.white
     }
 })

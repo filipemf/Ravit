@@ -6,6 +6,8 @@ import * as Google from 'expo-google-app-auth';
 import Fire from '../../../Fire'
 import * as Facebook from 'expo-facebook';
 
+console.disableYellowBox = true;
+
 export default class LoginScreen extends React.Component {
 
     state = {
