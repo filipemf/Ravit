@@ -20,7 +20,7 @@ export default class RegisterScreen extends React.Component{
         loading: false
     }
     onIconPress = ()=>{
-      this.setState({secureTextEntry: !this.state.secureTextEntry})
+      this.setState(prev => ({user: {...prev.user, secureTextEntry: !this.state.user.secureTextEntry } }));
   }
 
     handlePickAvatar = async () => {
@@ -106,7 +106,7 @@ export default class RegisterScreen extends React.Component{
                   </TouchableOpacity>
 
                   <Text style={styles.inputTitle}>Senha</Text>
-                  <TextInput style={styles.input} autoCapitalize='none' secureTextEntry={this.state.secureTextEntry}
+                  <TextInput style={styles.input} autoCapitalize='none' secureTextEntry={this.state.user.secureTextEntry}
                     onChangeText={password =>
                       this.setState({ user: { ...this.state.user, password } })
                     }

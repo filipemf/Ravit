@@ -68,7 +68,7 @@ export default class ToDoList extends React.Component {
 
                     <TouchableOpacity style={[styles.listContainer, { backgroundColor: list.color }]} onPress={() => this.toggleListModal()} onLongPress={() => this.AsyncDeleteAlert()}>
                         <View style={{}}>
-                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-calendar"||list.ioniconIcon=="ios-build"||list.ioniconIcon=="ios-alert"?-15:-50, flexWrap:'wrap'}}>
+                            <View style={{ position: 'absolute', alignSelf: 'flex-end', right: 10, bottom: list.ioniconIcon=="ios-fitness"||list.ioniconIcon=="ios-calendar"||list.ioniconIcon=="ios-build"?-15:-50, flexWrap:'wrap'}}>
                                 <Ionicons name={list.ioniconIcon} size={150} color="#fcfcfc"/>
                             </View>
 
