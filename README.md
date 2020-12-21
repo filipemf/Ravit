@@ -12,8 +12,8 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 ## Tela inicial
 Tela onde apresentamos 
 
-
-![alt text](https://i.imgur.com/YsILFn9.jpg =100x)
+<img src="https://i.imgur.com/YsILFn9.jpg" alt="drawing" width="200"/>
+![alt text](https://i.imgur.com/YsILFn9.jpg)
 ![alt text](https://i.imgur.com/n5e8dki.jpg)
 ![alt text](https://i.imgur.com/HxOLomc.jpg)
 ![alt text](https://i.imgur.com/WpLqMIF.jpg)
