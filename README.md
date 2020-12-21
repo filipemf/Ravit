@@ -13,7 +13,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 Tela onde apresentamos 
 
 
-![alt text](https://i.imgur.com/YsILFn9.jpg =100x20)
+![alt text](https://i.imgur.com/YsILFn9.jpg =100)
 ![alt text](https://i.imgur.com/n5e8dki.jpg)
 ![alt text](https://i.imgur.com/HxOLomc.jpg)
 ![alt text](https://i.imgur.com/WpLqMIF.jpg)
