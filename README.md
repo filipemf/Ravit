@@ -1,14 +1,14 @@
 # Ravit
 End of Course Paper. An application aimed at helping users establish good habits. By: Filipe Marques
 
-# Tecnologias
+# Tecnologies
 This project was developed using the following technologies:
 
 - [NodeJS](https://nodejs.org/en/)
 - [React Native](https://reactnative.dev/)
 - [Firebase](https://firebase.google.com/?hl=pt)
 
-# Funções
+# Features
 ## Main screen
 
 <img src="https://i.imgur.com/YsILFn9.jpg" alt="drawing" width="250"/>
