@@ -1,16 +1,15 @@
 # Ravit
-Projeto de TCC. Aplicativo com o objetivo de contribuir para a criação de bons hábitos do usuário. Por: Filipe Marques
+End of Course Paper. An application aimed at helping users establish good habits. By: Filipe Marques
 
 # Tecnologias
-Esse projeto foi desenvolvido com as seguintes tecnologias:
+This project was developed using the following technologies:
 
 - [NodeJS](https://nodejs.org/en/)
 - [React Native](https://reactnative.dev/)
 - [Firebase](https://firebase.google.com/?hl=pt)
 
 # Funções
-## Tela inicial
-Tela onde apresentamos 
+## Main screen
 
 <img src="https://i.imgur.com/YsILFn9.jpg" alt="drawing" width="250"/>
 <img src="https://i.imgur.com/n5e8dki.jpg" alt="drawing" width="250"/>
@@ -18,44 +17,44 @@ Tela onde apresentamos
 <img src="https://i.imgur.com/WpLqMIF.jpg" alt="drawing" width="250"/>
 
 ## Login
-Usando o email e senha já criados, o usuário poderá fazer login no aplicativo. Também é possivel realizar o login utilizando uma conta no Facebook e no Google.
+Using the email and password already created, the user will be able to log in to the application. It is also possible to log in using a Facebook and Google account.
 
 <img src="https://i.imgur.com/Gzzb0Hb.jpg" alt="drawing" width="250"/>
 
-## Registro
-Inserindo o nome completo, uma foto de perfil, um email e uma senha, é possivel fazer o cadastro dentro da aplicação.
+## Sign Up
+By entering the full name, a profile picture, an email, and a password, it is possible to register within the application.
 
 <img src="https://i.imgur.com/pyNbINl.jpg" alt="drawing" width="250"/>
 
 ## Feed
-Primeira tela vista após o login. Aqui aparecem todos os posts dos seguidores do usuario. É possivel aplicar um filtro para procurar por posts em categorias que deseja.
+The first screen seen after logging in. Here, all the posts from the user's followers are displayed. It is possible to apply a filter to search for posts in desired categories.
 
 <img src="https://i.imgur.com/vvXoj7N.jpg" alt="drawing" width="250"/>
 
 ## Post
-Ao clicar em algum post no feed, o usuario é redirecionado a esta tela, onde ele pode conferir a imagem em resolução maior, as informações completas de modo de preparo e ingredientes para receitas e o texto completo para outros posts. Aqui também é possivel fazer um comentário.
+When clicking on a post in the feed, the user is redirected to this screen where they can view the image in higher resolution, complete preparation instructions and ingredients for recipes, and the full text for other posts. It's also possible to leave a comment here.
 
 <img src="https://i.imgur.com/5RLfJNS.jpg" alt="drawing" width="250"/>
 <img src="https://i.imgur.com/tqO4VgM.jpg" alt="drawing" width="250"/>
 
-## Metas
-Tela de metas. Nessa tela, o usuário pode adicionar uma lista e dentro da lista metas/objetivos, que podem ser marcadas como concluidas ou excluidas arrastando-as para a direita.
+## Goals
+Goals Screen. In this screen, the user can add a list and within the list, goals/objectives that can be marked as completed or deleted by swiping them to the right.
 
 <img src="https://i.imgur.com/EQgMxsM.jpg" alt="drawing" width="250"/>
 
-## Adicionar post
-Aqui é possivel adicionar um post em 2 formatos, um de receitas, com modo de preparo e ingredientes, e outro para outros temas, onde há um campo para texto. Nos 2 formatos o usuário adiciona uma imagem ao post e pode adicionar até 3 tags, que servem para facilitar a busca de posts por outros usuários.
+## Add post
+Here, it is possible to add a post in two formats: one for recipes, including preparation instructions and ingredients, and another for other topics, with a text field. In both formats, the user adds an image to the post and can include up to 3 tags to make it easier for other users to search for posts.
 
 <img src="https://i.imgur.com/1Y2Si52.jpg" alt="drawing" width="250"/>
 
-## Notícias
-Tela de notícias. Nessa tela, o usuário pode ver notícias sobre nutrição e exercícios. Ao clicar em algum post, é possivel conferir as informações completas da matéria.
+## News
+News Screen. In this screen, the user can view news related to nutrition and exercise. By clicking on a post, it's possible to access the complete information of the article.
 
 <img src="https://i.imgur.com/y5QZild.jpg" alt="drawing" width="250"/>
 <img src="https://i.imgur.com/GUcel7b.jpg" alt="drawing" width="250"/>
 <img src="https://i.imgur.com/Hh4MHDC.jpg" alt="drawing" width="250"/>
 
-## Perfil
-Aqui o usuário pode conferir as informações sobre seu perfil, como número de posts, seguidores, pessoas seguindo e nível. Pode-se também editar as informações de nome completo, nome de usuário e foto de perfil. Para fazer o logout, basta clicar na própria foto de perfil.
+## Profile
+Here, the user can check their profile information, such as the number of posts, followers, following, and level. It's also possible to edit full name, username, and profile picture. To log out, simply click on the profile picture itself.
 
 <img src="https://i.imgur.com/tlMaI7N.jpg" alt="drawing" width="250"/>
